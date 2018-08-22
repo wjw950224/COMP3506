@@ -1,5 +1,8 @@
 package comp3506.assn1.adts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A three-dimensional data structure that holds items in a positional relationship to each other.
  * Each cell in the data structure can hold multiple items.
@@ -14,9 +17,10 @@ public class BoundedCube<T> implements Cube<T> {
 	private int length;
 	private int breadth;
 	private int height;
-	//private Position[] positions = (Position[]) Array.newInstance(Position, 20000);
+	private Position[] positions;// = (Position[]) Array.newInstance(Position, 20000);
 	private int cellNum;
-
+	//private Tree<T> tree;
+	
 	/**
 	 * 
 	 * @param length  Maximum size in the 'x' dimension.
@@ -29,106 +33,103 @@ public class BoundedCube<T> implements Cube<T> {
 		this.breadth = breadth;
 		this.height = height;
 		this.cellNum = 0;
-		//this.positions = new Position[20000];
+		//this.tree = new Tree<T>();
+		this.positions = new Position[20000];
+		
 	}
 
-	private class x {
-		int x;
-		y y;
-	}
 	
-	private class y {
-		int y;
-		z z;
-	}
 	
-	private class z {
-		int z;
-		TraversableQueue<T> elements;
-	}
-	
-	/**private class Position {
+	private class Position<T> {
 		int x;
 		int y;
 		int z;
-		TraversableQueue<T> elements;
-	}**/
+		TraversableQueue<T> elements = new TraversableQueue<T>();
+	}
 	
 	@Override
 	public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//positions[cellNum] = new Position();
-		//positions[cellNum].x = x;
-		//positions[cellNum].y = y;
-		//positions[cellNum].z = z;
-		//positions[cellNum].elements.enqueue(element);
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				positions[i].elements.enqueue(element);
+				return;
+			}
+		}
+		positions[cellNum] = new Position<T>();
+		positions[cellNum].x = x;
+		positions[cellNum].y = y;
+		positions[cellNum].z = z;
+		positions[cellNum].elements.enqueue(element);
 		this.cellNum++;
 	}
 
 	@Override
 	public T get(int x, int y, int z) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//for (int i = 0; i < this.cellNum; i++) {
-		//	if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-		//		return positions[i].elements.iterator().next();
-		//	}
-		//}
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				return (T) positions[i].elements.iterator().next();
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//for (int i = 0; i < this.cellNum; i++) {
-		//	if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-		//		return positions[i].elements;
-		//	}
-		//}
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				return positions[i].elements;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public boolean isMultipleElementsAt(int x, int y, int z) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//for (int i = 0; i < this.cellNum; i++) {
-		//	if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-		//		return positions[i].elements.iterator().hasNext();
-		//	}
-		//}
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				//positions[i].elements.iterator().next();
+				
+				return positions[i].elements.iterator().hasNext();
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//for (int i = 0; i < this.cellNum; i++) {
-		//	if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-		//		if (element.equals(positions[i].elements.iterator().next())) {
-		//			positions[i].elements.iterator().remove();
-		//			return true;
-		//		}
-		//	}
-		//}
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				if (element.equals(positions[i].elements.iterator().next())) {
+					positions[i].elements.iterator().remove();
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
-		//for (int i = 0; i < this.cellNum; i++) {
-		//	if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-		//		for (int j = 0; j < positions[i].elements.size(); j++) {
-		//			positions[i].elements.dequeue();
-		//		}
-		//	}
-		//}
+		for (int i = 0; i < this.cellNum; i++) {
+			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
+				for (int j = 0; j < positions[i].elements.size(); j++) {
+					positions[i].elements.dequeue();
+				}
+			}
+		}
 		
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		//this.positions = null;
+		//TODO Auto-generated method stub
+		this.positions = null;
 	}
 	
 }

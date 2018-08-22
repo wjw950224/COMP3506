@@ -29,6 +29,13 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		
 		@Override
 		public boolean hasNext() {
+			if (this.current.next.equals(head)) {
+				if (this.current.next.next != null) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 			if (this.current.next != null) {
 				return true;
 			} else {
@@ -38,7 +45,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() {
-			this.current = current.next;
+			this.current = this.current.next;
 			return this.current.element;
 		}
 		
