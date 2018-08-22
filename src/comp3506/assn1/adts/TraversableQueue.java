@@ -6,10 +6,11 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> head;
 	private LinkedNode<T> tail;
 	private int size = 0;
-	
+    //private Iterator itr = new Itr();
 	private class LinkedNode<T> {
 		LinkedNode<T> next = null;
 		LinkedNode<T> previous = null;
+
 		T element = null;
 	}
 	
@@ -29,13 +30,13 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		
 		@Override
 		public boolean hasNext() {
-			if (this.current.next.equals(head)) {
+			/**if (this.current.next.equals(head)) {
 				if (this.current.next.next != null) {
 					return true;
 				} else {
 					return false;
 				}
-			}
+			}**/
 			if (this.current.next != null) {
 				return true;
 			} else {
@@ -44,9 +45,13 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		}
 
 		@Override
-		public T next() {
-			this.current = this.current.next;
-			return this.current.element;
+		public T next() throws java.util.NoSuchElementException {
+		    if (hasNext()){
+                this.current = this.current.next;
+                return this.current.element;
+            } else {
+		        throw new java.util.NoSuchElementException("Empty\n");
+            }
 		}
 		
 		@Override

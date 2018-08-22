@@ -1,7 +1,6 @@
 package comp3506.assn1.adts;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * A three-dimensional data structure that holds items in a positional relationship to each other.
@@ -17,12 +16,11 @@ public class BoundedCube<T> implements Cube<T> {
 	private int length;
 	private int breadth;
 	private int height;
-	private Position[] positions;// = (Position[]) Array.newInstance(Position, 20000);
 	private int cellNum;
-	//private Tree<T> tree;
-	
+	private Node[] cube;
+
+
 	/**
-	 * 
 	 * @param length  Maximum size in the 'x' dimension.
 	 * @param breadth Maximum size in the 'y' dimension.
 	 * @param height  Maximum size in the 'z' dimension.
@@ -33,103 +31,88 @@ public class BoundedCube<T> implements Cube<T> {
 		this.breadth = breadth;
 		this.height = height;
 		this.cellNum = 0;
-		//this.tree = new Tree<T>();
-		this.positions = new Position[20000];
-		
+		this.cube = new Node[height];
+		for (int i = 0; i < height; i++) {
+		    cube[i] = new Node(breadth);
+		    for (int j = 0; j < breadth; j++) {
+		        cube[i].next[j] = new Node(length);
+		        for (int k = 0; k < length; k++) {
+                    cube[i].next[j].next[k] = new Node(0);
+                    cube[i].next[j].next[k].cells = new TraversableQueue<T>();
+                }
+            }
+        }
 	}
 
-	
-	
-	private class Position<T> {
-		int x;
-		int y;
-		int z;
-		TraversableQueue<T> elements = new TraversableQueue<T>();
-	}
-	
-	@Override
-	public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				positions[i].elements.enqueue(element);
-				return;
-			}
-		}
-		positions[cellNum] = new Position<T>();
-		positions[cellNum].x = x;
-		positions[cellNum].y = y;
-		positions[cellNum].z = z;
-		positions[cellNum].elements.enqueue(element);
-		this.cellNum++;
-	}
+    private class Node<T> {
+        //int coordinator;
+        Node[] next;
+        IterableQueue<T> cells;
 
-	@Override
-	public T get(int x, int y, int z) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				return (T) positions[i].elements.iterator().next();
-			}
-		}
-		return null;
-	}
+        public Node(int size)
+        {
+            //coordinator = position;
+            next = new Node[size];
+            //children = new Node[size];
+            //cells = new TraversableQueue<T>();
+        }
+    }
 
-	@Override
-	public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				return positions[i].elements;
-			}
-		}
-		return null;
-	}
 
-	@Override
-	public boolean isMultipleElementsAt(int x, int y, int z) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				//positions[i].elements.iterator().next();
-				
-				return positions[i].elements.iterator().hasNext();
-			}
-		}
-		return false;
-	}
+    @Override
+    public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
+        this.cube[z].next[y].next[x].cells.enqueue(element);
+    }
 
-	@Override
-	public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				if (element.equals(positions[i].elements.iterator().next())) {
-					positions[i].elements.iterator().remove();
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    @Override
+    public T get(int x, int y, int z) throws IndexOutOfBoundsException {
+	    T element = (T) this.cube[z].next[y].next[x].cells.iterator().next();
+        //this.cube[z].next[y].next[x].cells.iterator().remove();
+	    return element;
+    }
 
-	@Override
-	public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < this.cellNum; i++) {
-			if (positions[i].x == x && positions[i].y == y && positions[i].z == z) {
-				for (int j = 0; j < positions[i].elements.size(); j++) {
-					positions[i].elements.dequeue();
-				}
-			}
-		}
-		
-	}
+    @Override
+    public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
+        return (IterableQueue<T>) this.cube[z].next[y].next[x].cells;
+    }
 
-	@Override
-	public void clear() {
-		//TODO Auto-generated method stub
-		this.positions = null;
-	}
-	
+    @Override
+    public boolean isMultipleElementsAt(int x, int y, int z) throws IndexOutOfBoundsException {
+        Iterator<T> itr = (Iterator<T>) this.cube[z].next[y].next[x].cells.iterator();
+        itr.next();
+	    if (itr.hasNext()) {
+	        return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
+	    for (int i = 0; i < this.cube[z].next[y].next[x].cells.size(); i++) {
+	        if (this.cube[z].next[y].next[x].cells.iterator().next().equals(element)) {
+                this.cube[z].next[y].next[x].cells.iterator().remove();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
+        this.cube[z].next[y].next[x].cells = new TraversableQueue<T>();
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < height; i++) {
+            cube[i] = new Node(breadth);
+            for (int j = 0; j < breadth; j++) {
+                cube[i].next[j] = new Node(length);
+                for (int k = 0; k < length; k++) {
+                    cube[i].next[j].next[k] = new Node(0);
+                    cube[i].next[j].next[k].cells = new TraversableQueue<T>();
+                }
+            }
+        }
+    }
 }
+
