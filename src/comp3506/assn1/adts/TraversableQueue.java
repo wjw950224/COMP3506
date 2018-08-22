@@ -8,18 +8,23 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private int size = 0;
 	
 	private class LinkedNode<T> {
-		LinkedNode<T> next;
-		LinkedNode<T> previous;
-		T element;
+		LinkedNode<T> next = null;
+		LinkedNode<T> previous = null;
+		T element = null;
 	}
 	
-	private class Itr<T> implements Iterator<T> {
+	private class Itr implements Iterator<T> {
 		private LinkedNode<T> current;
-		private int index = 0;
+		//private int index = 0;
+		private LinkedNode<T> initNode;
 		
-		private Itr() {
-			LinkedNode<T> first = new LinkedNode<T>();
-			this.current = first;
+		public Itr() {
+			//LinkedNode<T> first = new LinkedNode<T>();
+			//this.current = first;
+			initNode = new LinkedNode<T>();
+			initNode.next = head;
+			initNode.previous = null;
+			this.current = initNode;
 		}
 		
 		@Override
@@ -33,10 +38,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() {
-			if (index != 0) {
-				this.current = current.next;
-			}
-			index++;
+			this.current = current.next;
 			return this.current.element;
 		}
 		
@@ -52,28 +54,34 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	public void enqueue(T element) throws IllegalStateException {
 		LinkedNode<T> newNode = new LinkedNode<T>();
 		newNode.element = element;
+		newNode.next = null;
 		if (size == 0) {
 			newNode.previous = null;
-			newNode.next = null;
 			this.head = newNode;
-			this.tail = newNode;
 		} else {
 			newNode.previous = this.tail;
-			newNode.next = null;
 			this.tail.next = newNode;
-			this.tail = newNode;
 		}
+		this.tail = newNode;
 		this.size++;
 	}
 	
 
 	@Override
 	public T dequeue() throws IndexOutOfBoundsException {
-		LinkedNode<T> tempNode = this.head;
-		this.head = tempNode.next;
-		this.head.previous = null;
+		//this.head.next.previous = null;
+		if (size == 0) {
+			throw new IndexOutOfBoundsException("Empty Queue");
+		}
+		T element = this.head.element;
+		if (this.head.next != null) {
+			this.head = this.head.next;
+			this.head.previous = null;
+		} else {
+			this.head = null;
+		}
 		this.size--;
-		return tempNode.element;
+		return element;
 	}
 
 	@Override
@@ -83,8 +91,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		Itr<T> itr = new Itr<T>();
-		return itr;
+		return new Itr();
 	}
 
 
