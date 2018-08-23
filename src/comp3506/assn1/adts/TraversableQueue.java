@@ -6,22 +6,16 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> head;
 	private LinkedNode<T> tail;
 	private int size = 0;
-    //private Iterator itr = new Itr();
 	private class LinkedNode<T> {
 		LinkedNode<T> next = null;
 		LinkedNode<T> previous = null;
-
 		T element = null;
 	}
 	
 	private class Itr implements Iterator<T> {
 		private LinkedNode<T> current;
-		//private int index = 0;
 		private LinkedNode<T> initNode;
-		
 		public Itr() {
-			//LinkedNode<T> first = new LinkedNode<T>();
-			//this.current = first;
 			initNode = new LinkedNode<T>();
 			initNode.next = head;
 			initNode.previous = null;
@@ -30,13 +24,6 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		
 		@Override
 		public boolean hasNext() {
-			/**if (this.current.next.equals(head)) {
-				if (this.current.next.next != null) {
-					return true;
-				} else {
-					return false;
-				}
-			}**/
 			if (this.current.next != null) {
 				return true;
 			} else {
@@ -46,20 +33,27 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() throws java.util.NoSuchElementException {
-
 		    if (hasNext()){
                 this.current = this.current.next;
                 return this.current.element;
             }
             return null;
         }
-		
+
+        /**
 		@Override
 		public void remove() {
-			this.current.previous.next = this.current.next;
-			this.current.next.previous = this.current.previous;
-			this.current = this.current.next;
-		}
+			if (this.current.next == null) {
+			    return;
+            }
+            if (this.current.previous != null) {
+                this.current.previous.next = this.current.next;
+                this.current.next.previous = this.current.previous;
+                this.current = this.current.next;
+                return;
+            }
+			this.current = null;
+		}**/
 		
 	}
 	@Override
@@ -81,9 +75,8 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 	@Override
 	public T dequeue() throws IndexOutOfBoundsException {
-		//this.head.next.previous = null;
 		if (size == 0) {
-			throw new IndexOutOfBoundsException("Empty Queue");
+			return null;
 		}
 		T element = this.head.element;
 		if (this.head.next != null) {
@@ -105,8 +98,4 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	public Iterator<T> iterator() {
 		return new Itr();
 	}
-
-
-
-
 }
