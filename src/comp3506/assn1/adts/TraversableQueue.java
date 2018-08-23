@@ -46,13 +46,13 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() throws java.util.NoSuchElementException {
+
 		    if (hasNext()){
                 this.current = this.current.next;
                 return this.current.element;
-            } else {
-		        throw new java.util.NoSuchElementException("Empty\n");
             }
-		}
+            return null;
+        }
 		
 		@Override
 		public void remove() {
