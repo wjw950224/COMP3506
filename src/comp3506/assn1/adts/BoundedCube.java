@@ -37,7 +37,6 @@ public class BoundedCube<T> implements Cube<T> {
 		        cube[i].next[j] = new Node(10, 0);
 		        for (int k = 0; k < 10; k++) {
                     cube[i].next[j].next[k] = new Node(0, 0);
-                    cube[i].next[j].next[k].cells = new TraversableQueue<T>();
                 }
             }
         }
@@ -59,7 +58,6 @@ public class BoundedCube<T> implements Cube<T> {
         }
 
         public IterableQueue<T> getCells(int x, int y) {
-            //Node zNode = this.cube[z];
             for (int i = 0; i < usedNode; i++) {
                 Node yNode = next[i];
                 if (yNode.coordinator == y) {
@@ -74,29 +72,45 @@ public class BoundedCube<T> implements Cube<T> {
             return null;
         }
 
-        public int getIndex(int number) {
-            for (int i = 0; i < usedNode; i++) {
-                if (coordinator == number) {
-                    return i;
+        public void updateNode() {
+            if (usedNode >= nextNodeSize) {
+                nextNodeSize *= 2;
+                Node[] newNext = new Node[nextNodeSize];
+
+                for (int i = 0; i < usedNode; i++) {
+                    newNext[i] = next[i];
                 }
+                for (int i = usedNode; i < nextNodeSize; i++) {
+                    newNext[i] = new Node(10, 0);
+                    newNext[i].next = new Node[10];
+                    for (int j = 0; j < 10; j++) {
+                        newNext[i].next[j] = new Node(0,0);
+                    }
+                }
+                next = newNext;
+
             }
-            return -1;
         }
     }
 
 
     @Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
+	    //this.cube[z].updateNode();
         if (this.cube[z].getCells(x, y) != null) {
             this.cube[z].getCells(x, y).enqueue(element);
             return;
         }
 	    Node zNode = this.cube[z];
+        zNode.updateNode();
 	    zNode.coordinator = z;
 	    Node yNode = zNode.next[zNode.usedNode];
+	    yNode.updateNode();
 	    yNode.coordinator = y;
 	    Node xNode = yNode.next[yNode.usedNode];
+        xNode.cells = new TraversableQueue<T>();
 	    xNode.coordinator = x;
+
 	    xNode.cells.enqueue(element);
 	    zNode.usedNode++;
 	    yNode.usedNode++;
@@ -137,9 +151,8 @@ public class BoundedCube<T> implements Cube<T> {
 
     @Override
     public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
-	    int yIndex = this.cube[z].getIndex(y);
-	    int xIndex = this.cube[z].next[yIndex].getIndex(z);
-        this.cube[z].next[yIndex].next[xIndex].cells = new TraversableQueue<T>();
+        IterableQueue<T> cells = this.cube[z].getCells(x, y);
+        cells = new TraversableQueue<T>();
     }
 
     @Override
