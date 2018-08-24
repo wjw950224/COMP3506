@@ -6,7 +6,6 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> head;
 	private LinkedNode<T> tail;
 	private int size = 0;
-	//private int lastSize = 0;
 
 	private class LinkedNode<T> {
 		LinkedNode<T> next = null;
@@ -19,16 +18,25 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		private LinkedNode<T> current;
 		private LinkedNode<T> initNode;
 		public Itr() {
-			initNode = new LinkedNode<T>();
-			initNode.next = head;
-			initNode.previous = null;
+			this.initNode = new LinkedNode<T>();
+			this.initNode.next = head;
+			this.initNode.previous = null;
 			this.current = initNode;
 			head.previous = initNode;
-			lastSize = size;
+			this.lastSize = size;
 		}
 		
 		@Override
 		public boolean hasNext() {
+			if (size() < lastSize) {
+				for (int i = 0; i < lastSize - size(); i++) {
+				    if (size() <= 1) {
+				        return false;
+                    }
+					this.current = this.current.next;
+				}
+				lastSize = size();
+			}
 			if (this.current.next != null) {
 				return true;
 			} else {
@@ -38,18 +46,15 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() throws java.util.NoSuchElementException {
-			/**
-            if (size() < lastSize) {
-                for (int i = 0; i < lastSize - size(); i++) {
-                    this.current = this.current.previous;
-                }
-                lastSize = size();
-            }
-            if (size() == 0) {
-                this.current = this.initNode;
-                this.initNode.next = head;
-                return null;
-            }**/
+			if (size() < lastSize) {
+				for (int i = 0; i < lastSize - size(); i++) {
+					if (size() < 1) {
+						return null;
+					}
+					this.current = this.current.next;
+				}
+				lastSize = size();
+			}
 		    if (hasNext()){
                 this.current = this.current.next;
                 return this.current.element;
@@ -90,7 +95,6 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		this.size++;
 		//this.lastSize = this.size - 1;
 	}
-	
 
 	@Override
 	public T dequeue() throws IndexOutOfBoundsException {

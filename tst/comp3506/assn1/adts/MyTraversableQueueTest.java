@@ -96,8 +96,44 @@ public class MyTraversableQueueTest {
         assertEquals(null, itr.next());
     }
 
+
+
     @Test//(timeout=500)
-    public void testMultiElementNext4() {
+    public void testSingleElementHasNext() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        testQueue.enqueue(o1);
+        Iterator itr = testQueue.iterator();
+        assertEquals(o1, itr.next());
+        assertEquals(false, itr.hasNext());
+    }
+
+    @Test//(timeout=500)
+    public void testMultiElementHasNext() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Object o3 = new Object();
+        Object o4 = new Object();
+        Object o5 = new Object();
+        testQueue.enqueue(o1);
+        testQueue.enqueue(o2);
+        testQueue.enqueue(o3);
+        testQueue.enqueue(o4);
+        testQueue.enqueue(o5);
+        Iterator itr = testQueue.iterator();
+        itr.next();
+        assertEquals(true, itr.hasNext());
+        testQueue.dequeue();
+        testQueue.dequeue();
+        testQueue.dequeue();
+        assertEquals(true, itr.hasNext());
+        testQueue.dequeue();
+        assertEquals(false, itr.hasNext());
+    }
+
+    @Test//(timeout=500)
+    public void testMultiElementHasNext2() {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
         Object o1 = new Object();
         Object o2 = new Object();
@@ -109,10 +145,37 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o3);
         testQueue.enqueue(o4);
         Iterator itr = testQueue.iterator();
-        assertEquals(o1, itr.next());
+        assertEquals(true, itr.hasNext());
         testQueue.dequeue();
-        assertEquals(o2, itr.next());
+        testQueue.dequeue();
+        testQueue.dequeue();
+        assertEquals(false, itr.hasNext());
         testQueue.enqueue(o5);
-        assertEquals(o3, itr.next());
+        assertEquals(true, itr.hasNext());
+    }
+
+    @Test//(timeout=500)
+    public void testMultiElementHasNext3() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Object o3 = new Object();
+        Object o4 = new Object();
+        Object o5 = new Object();
+        testQueue.enqueue(o1);
+        testQueue.enqueue(o2);
+        testQueue.enqueue(o3);
+        testQueue.enqueue(o4);
+        Iterator itr = testQueue.iterator();
+        assertEquals(true, itr.hasNext());
+        testQueue.dequeue();
+        testQueue.dequeue();
+        testQueue.dequeue();
+        itr.next();
+        assertEquals(false, itr.hasNext());
+
+        testQueue.enqueue(o5);
+        itr.next();
+        assertEquals(false, itr.hasNext());
     }
 }
