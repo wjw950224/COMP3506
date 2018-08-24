@@ -1,11 +1,6 @@
 package comp3506.assn1.adts;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import org.junit.Test;
-
-import java.util.Iterator;
+import static org.junit.Assert.assertEquals;
 
 public class MyBoundedCubeTest {
     /**
@@ -28,7 +23,7 @@ public class MyBoundedCubeTest {
             for (int j = 0; j < 50; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertThat("", testCube.get(i, j, k), is(equalTo(element)));
+                    assertEquals(element, testCube.get(i, j, k));
                 }
             }
         }
@@ -42,7 +37,7 @@ public class MyBoundedCubeTest {
             for (int j = 0; j < 25; j++) {
                 for (int k = 0; k < 1; k++) {
                     testCube.add(i, j, k, element);
-                    assertThat("", testCube.get(i, j, k), is(equalTo(element)));
+                    assertEquals(element, testCube.get(i, j, k));
                 }
             }
 
@@ -70,7 +65,7 @@ public class MyBoundedCubeTest {
         Object element = new Object();
         for (int i = 0; i < 250000; i++) {
             testCube.add(1, 1, 1, element);
-            assertThat("", testCube.get(1, 1, 1), is(equalTo(element)));
+            assertEquals(element, testCube.get(1, 1, 1));
         }
     }
 
@@ -82,7 +77,7 @@ public class MyBoundedCubeTest {
             for (int j = 0; j < 10; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertThat("", testCube.get(i, j, k), is(equalTo(element)));
+                    assertEquals(element, testCube.get(i, j, k));
                 }
             }
         }
@@ -96,7 +91,7 @@ public class MyBoundedCubeTest {
             for (int j = 0; j < 250; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertThat("", testCube.get(i, j, k), is(equalTo(element)));
+                    assertEquals(element, testCube.get(i, j, k));
                 }
             }
         }

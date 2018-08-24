@@ -4,15 +4,13 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class MyTraversableQueueTest {
     @Test(timeout=500)
     public void testEmptyQueueSize() {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
-        assertThat("An empty queue does not have a size of 0.", testQueue.size(), is(equalTo(0)));
+        assertEquals(0, testQueue.size());
     }
 
     @Test(timeout=500)
@@ -21,7 +19,7 @@ public class MyTraversableQueueTest {
         for (int i = 0; i < 20000; i++) {
             testQueue.enqueue(new Object());
         }
-        assertThat("A queue with 20000 elements does not have a size of 20000.", testQueue.size(), is(equalTo(20000)));
+        assertEquals(20000, testQueue.size());
     }
 
     @Test(timeout=500)
@@ -33,7 +31,7 @@ public class MyTraversableQueueTest {
         while(testQueue.size() > 0) {
             testQueue.dequeue();
         }
-        assertThat("Dequeue empty queue return null.", testQueue.dequeue(), is(equalTo(null)));
+        assertEquals(null, testQueue.dequeue());
     }
 
     @Test(timeout=500)
@@ -41,7 +39,7 @@ public class MyTraversableQueueTest {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
         Object o = new Object();
         testQueue.enqueue(o);
-        assertThat("Return first element when first call next.", testQueue.iterator().next(), is(equalTo(o)));
+        assertEquals(o, testQueue.iterator().next());
     }
 
     @Test(timeout=500)
@@ -51,6 +49,70 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o);
         Iterator itr = testQueue.iterator();
         itr.next();
-        assertThat("Return first element when first call next.", itr.next(), is(equalTo(null)));
+        assertEquals(null, itr.next());
+    }
+
+    @Test(timeout=500)
+    public void testMultiElementNext() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Object o3 = new Object();
+        testQueue.enqueue(o1);
+        testQueue.enqueue(o2);
+        testQueue.enqueue(o3);
+        Iterator itr = testQueue.iterator();
+        assertEquals(o1, itr.next());
+        assertEquals(o2, itr.next());
+        assertEquals(o3, itr.next());
+    }
+
+    @Test(timeout=500)
+    public void testMultiElementNext2() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Object o3 = new Object();
+        testQueue.enqueue(o1);
+        Iterator itr = testQueue.iterator();
+        assertEquals(o1, itr.next());
+        testQueue.enqueue(o2);
+        assertEquals(o2, itr.next());
+        testQueue.enqueue(o3);
+        assertEquals(o3, itr.next());
+    }
+
+    @Test//(timeout=500)
+    public void testMultiElementNext3() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        testQueue.enqueue(o1);
+        Iterator itr = testQueue.iterator();
+        assertEquals(o1, itr.next());
+        testQueue.dequeue();
+        assertEquals(null, itr.next());
+        testQueue.enqueue(o2);
+        assertEquals(null, itr.next());
+    }
+
+    @Test//(timeout=500)
+    public void testMultiElementNext4() {
+        IterableQueue<Object> testQueue = new TraversableQueue<>();
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Object o3 = new Object();
+        Object o4 = new Object();
+        Object o5 = new Object();
+        testQueue.enqueue(o1);
+        testQueue.enqueue(o2);
+        testQueue.enqueue(o3);
+        testQueue.enqueue(o4);
+        Iterator itr = testQueue.iterator();
+        assertEquals(o1, itr.next());
+        testQueue.dequeue();
+        assertEquals(o2, itr.next());
+        testQueue.enqueue(o5);
+        assertEquals(o3, itr.next());
     }
 }

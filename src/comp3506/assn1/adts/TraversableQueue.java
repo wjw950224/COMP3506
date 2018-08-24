@@ -6,6 +6,8 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> head;
 	private LinkedNode<T> tail;
 	private int size = 0;
+	//private int lastSize = 0;
+
 	private class LinkedNode<T> {
 		LinkedNode<T> next = null;
 		LinkedNode<T> previous = null;
@@ -13,6 +15,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	}
 	
 	private class Itr implements Iterator<T> {
+        private int lastSize;
 		private LinkedNode<T> current;
 		private LinkedNode<T> initNode;
 		public Itr() {
@@ -20,6 +23,8 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 			initNode.next = head;
 			initNode.previous = null;
 			this.current = initNode;
+			head.previous = initNode;
+			lastSize = size;
 		}
 		
 		@Override
@@ -33,10 +38,23 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 
 		@Override
 		public T next() throws java.util.NoSuchElementException {
+			/**
+            if (size() < lastSize) {
+                for (int i = 0; i < lastSize - size(); i++) {
+                    this.current = this.current.previous;
+                }
+                lastSize = size();
+            }
+            if (size() == 0) {
+                this.current = this.initNode;
+                this.initNode.next = head;
+                return null;
+            }**/
 		    if (hasNext()){
                 this.current = this.current.next;
                 return this.current.element;
             }
+
             return null;
         }
 
@@ -70,6 +88,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		}
 		this.tail = newNode;
 		this.size++;
+		//this.lastSize = this.size - 1;
 	}
 	
 
@@ -84,8 +103,10 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 			this.head.previous = null;
 		} else {
 			this.head = null;
+			this.tail = null;
 		}
 		this.size--;
+        //this.lastSize = this.size + 1;
 		return element;
 	}
 
