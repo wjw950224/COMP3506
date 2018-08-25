@@ -93,7 +93,15 @@ public class BoundedCube<T> implements Cube<T> {
         }
     }
 
-
+    /**
+     * Add an element at a fixed position.
+     *
+     * @param element The element to be added at the indicated position.
+     * @param x X Coordinate of the position of the element.
+     * @param y Y Coordinate of the position of the element.
+     * @param z Z Coordinate of the position of the element.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
 	    //this.cube[z].updateNode();
@@ -119,6 +127,15 @@ public class BoundedCube<T> implements Cube<T> {
 	    yNode.usedNode++;
     }
 
+    /**
+     * Return the 'oldest' element at the indicated position.
+     *
+     * @param x X Coordinate of the position of the element.
+     * @param y Y Coordinate of the position of the element.
+     * @param z Z Coordinate of the position of the element.
+     * @return 'Oldest' element at this position or null if no elements at the indicated position.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public T get(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
@@ -130,6 +147,15 @@ public class BoundedCube<T> implements Cube<T> {
         return (T) this.cube[z].getCells(x, y).iterator().next();
     }
 
+    /**
+     * Return all the elements at the indicated position.
+     *
+     * @param x X Coordinate of the position of the element(s).
+     * @param y Y Coordinate of the position of the element(s).
+     * @param z Z Coordinate of the position of the element(s).
+     * @return An IterableQueue of all elements at this position or null if no elements at the indicated position.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
@@ -138,6 +164,15 @@ public class BoundedCube<T> implements Cube<T> {
         return this.cube[z].getCells(x, y);
     }
 
+    /**
+     * Indicates whether there are more than one elements at the indicated position.
+     *
+     * @param x X Coordinate of the position of the element(s).
+     * @param y Y Coordinate of the position of the element(s).
+     * @param z Z Coordinate of the position of the element(s).
+     * @return true if there are more than one elements at the indicated position, false otherwise.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public boolean isMultipleElementsAt(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
@@ -151,6 +186,16 @@ public class BoundedCube<T> implements Cube<T> {
         return false;
     }
 
+    /**
+     * Removes the specified element at the indicated position.
+     *
+     * @param element The element to be removed from the indicated position.
+     * @param x X Coordinate of the position.
+     * @param y Y Coordinate of the position.
+     * @param z Z Coordinate of the position.
+     * @return true if the element was removed from the indicated position, false otherwise.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
@@ -179,6 +224,14 @@ public class BoundedCube<T> implements Cube<T> {
         return result;
     }
 
+    /**
+     * Removes all elements at the indicated position.
+     *
+     * @param x X Coordinate of the position.
+     * @param y Y Coordinate of the position.
+     * @param z Z Coordinate of the position.
+     * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
+     */
     @Override
     public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
@@ -190,6 +243,9 @@ public class BoundedCube<T> implements Cube<T> {
         }
     }
 
+    /**
+     * Removes all elements stored in the cube.
+     */
     @Override
     public void clear() {
         for (int i = 0; i < height; i++) {

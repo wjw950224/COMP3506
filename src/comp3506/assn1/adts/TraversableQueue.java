@@ -77,8 +77,14 @@ public class TraversableQueue<T> implements IterableQueue<T> {
             }
 			this.current = null;
 		}**/
-		
 	}
+
+    /**
+     * Add a new element to the end of the queue.
+     *
+     * @param element The element to be added to the queue.
+     * @throws IllegalStateException Queue cannot accept a new element (e.g. queue space is full).
+     */
 	@Override
 	public void enqueue(T element) throws IllegalStateException {
 		LinkedNode<T> newNode = new LinkedNode<T>();
@@ -95,6 +101,12 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		this.size++;
 	}
 
+    /**
+     * Remove and return the element at the head of the queue.
+     *
+     * @return Element at that was at the head of the queue.
+     * @throws IndexOutOfBoundsException Queue is empty and nothing can be dequeued.
+     */
 	@Override
 	public T dequeue() throws IndexOutOfBoundsException {
 		if (size == 0) {
@@ -112,12 +124,18 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		return element;
 	}
 
+    /**
+     * @return Number of elements in the queue.
+     */
 	@Override
 	public int size() {
 
 		return this.size;
 	}
 
+    /**
+     * @return iterator.
+     */
 	@Override
 	public Iterator<T> iterator() {
 
