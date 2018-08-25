@@ -1,5 +1,4 @@
 package comp3506.assn1.adts;
-
 import java.util.Iterator;
 
 /**
@@ -52,7 +51,7 @@ public class BoundedCube<T> implements Cube<T> {
         Node[] next;
         IterableQueue<T> cells;
 
-        public Node(int size, int position)
+        Node(int size, int position)
         {
             coordinator = position;
             nextNodeSize = size;
@@ -60,7 +59,7 @@ public class BoundedCube<T> implements Cube<T> {
             next = new Node[size];
         }
 
-        public IterableQueue<T> getCells(int x, int y) {
+        IterableQueue<T> getCells(int x, int y) {
             for (int i = 0; i < usedNode; i++) {
                 Node yNode = next[i];
                 if (yNode.coordinator == y) {
@@ -75,7 +74,7 @@ public class BoundedCube<T> implements Cube<T> {
             return null;
         }
 
-        public void updateNode() {
+        void updateNode() {
             if (usedNode >= nextNodeSize) {
                 nextNodeSize *= 2;
                 Node[] newNext = new Node[nextNodeSize];

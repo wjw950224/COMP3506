@@ -1,9 +1,6 @@
 package comp3506.assn1.adts;
-
 import org.junit.Test;
-
 import java.util.Iterator;
-
 import static org.junit.Assert.assertEquals;
 
 public class MyTraversableQueueTest {

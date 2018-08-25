@@ -23,7 +23,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
         private int lastSize;
 		private LinkedNode<T> current;
 		private LinkedNode<T> initNode;
-		public Itr() {
+		Itr() {
 			this.initNode = new LinkedNode<T>();
 			this.initNode.next = head;
 			this.initNode.previous = null;
@@ -65,24 +65,8 @@ public class TraversableQueue<T> implements IterableQueue<T> {
                 this.current = this.current.next;
                 return this.current.element;
             }
-
             return null;
         }
-
-        /**
-		@Override
-		public void remove() {
-			if (this.current.next == null) {
-			    return;
-            }
-            if (this.current.previous != null) {
-                this.current.previous.next = this.current.next;
-                this.current.next.previous = this.current.previous;
-                this.current = this.current.next;
-                return;
-            }
-			this.current = null;
-		}**/
 	}
 
     /**
