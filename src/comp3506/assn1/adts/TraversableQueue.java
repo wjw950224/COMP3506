@@ -49,7 +49,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 			if (size() < lastSize) {
 				for (int i = 0; i < lastSize - size(); i++) {
 					if (size() < 1) {
-						return null;
+						break;
 					}
 					this.current = this.current.next;
 				}
@@ -93,7 +93,6 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		}
 		this.tail = newNode;
 		this.size++;
-		//this.lastSize = this.size - 1;
 	}
 
 	@Override
@@ -110,17 +109,18 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 			this.tail = null;
 		}
 		this.size--;
-        //this.lastSize = this.size + 1;
 		return element;
 	}
 
 	@Override
 	public int size() {
+
 		return this.size;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
+
 		return new Itr();
 	}
 }

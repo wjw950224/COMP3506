@@ -96,4 +96,48 @@ public class MyBoundedCubeTest {
             }
         }
     }
+
+    @Test//(timeout=500)
+    public void testRemoveSingleElement() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element = new Object();
+        testCube.add(1, 2, 3, element);
+        assertEquals(false, testCube.remove(2,2,3,element));
+        assertEquals(true, testCube.remove(1,2,3,element));
+    }
+
+    @Test//(timeout=500)
+    public void testRemoveAllElement() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element1 = new Object();
+        Object element2 = new Object();
+        Object element3 = new Object();
+        testCube.add(1, 2, 3, element1);
+        testCube.add(1, 2, 3, element2);
+        testCube.add(1, 2, 3, element3);
+        testCube.removeAll(1,2,3);
+        assertEquals(0, testCube.getAll(1,2,3).size());
+    }
+
+    @Test//(timeout=500)
+    public void testClearCube() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element = new Object();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 250; j++) {
+                for (int k = 0; k < 10; k++) {
+                    testCube.add(i, j, k, element);
+                }
+            }
+        }
+        testCube.clear();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 250; j++) {
+                for (int k = 0; k < 10; k++) {
+                    assertEquals(null, testCube.getAll(i,j,k));
+                }
+            }
+        }
+
+    }
 }

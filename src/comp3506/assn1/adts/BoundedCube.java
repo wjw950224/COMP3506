@@ -141,18 +141,35 @@ public class BoundedCube<T> implements Cube<T> {
 
     @Override
     public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
+	    boolean result = false;
+        IterableQueue<T> cells;
+        IterableQueue<T> tempCells = new TraversableQueue<>();
+	    if (this.getAll(x,y,z) == null) {
+	        return false;
+        } else {
+	        cells = this.getAll(x,y,z);
+        }
 	    for (int i = 0; i < getAll(x, y, z).size(); i++) {
-	        if (getAll(x, y, z).iterator().next().equals(element)) {
-                getAll(x, y, z).iterator().remove();
+	        T object = cells.dequeue();
+	        if (!object.equals(element)) {
+	            tempCells.enqueue(object);
+            } else {
+	            result = true;
             }
         }
-        return false;
+        for (int i = 0; i < tempCells.size(); i++) {
+            T object = tempCells.dequeue();
+            cells.enqueue(object);
+        }
+        return result;
     }
 
     @Override
     public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
-        IterableQueue<T> cells = this.cube[z].getCells(x, y);
-        cells = new TraversableQueue<T>();
+	    int size = this.getAll(x,y,z).size();
+        for (int i = 0; i < size; i++) {
+            this.getAll(x,y,z).dequeue();
+        }
     }
 
     @Override
