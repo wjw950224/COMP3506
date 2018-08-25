@@ -15,6 +15,7 @@ public class BoundedCube<T> implements Cube<T> {
 	private int length;
 	private int breadth;
 	private int height;
+	@SuppressWarnings("rawtypes")
 	private Node[] cube;
 
 
@@ -24,6 +25,7 @@ public class BoundedCube<T> implements Cube<T> {
 	 * @param height  Maximum size in the 'z' dimension.
 	 * @throws IllegalArgumentException If provided dimension sizes are not positive.
 	 */
+	@SuppressWarnings("unchecked")
 	public BoundedCube(int length, int breadth, int height) throws IllegalArgumentException {
         if (length < 0 || breadth < 0|| height < 0) {
             throw new IndexOutOfBoundsException();
@@ -33,22 +35,24 @@ public class BoundedCube<T> implements Cube<T> {
 		this.height = height;
 		this.cube = new Node[height];
 		for (int i = 0; i < height; i++) {
-		    cube[i] = new Node(10, 0);
+		    cube[i] = new Node<Object>(10, 0);
 		    cube[i].coordinator = i;
 		    for (int j = 0; j < 10; j++) {
-		        cube[i].next[j] = new Node(10, 0);
+		        cube[i].next[j] = new Node<Object>(10, 0);
 		        for (int k = 0; k < 10; k++) {
-                    cube[i].next[j].next[k] = new Node(0, 0);
+                    cube[i].next[j].next[k] = new Node<Object>(0, 0);
                 }
             }
         }
 	}
 
-    private class Node<T> {
+    @SuppressWarnings("hiding")
+	private class Node<T> {
         int coordinator;
         int nextNodeSize;
         int usedNode;
-        Node[] next;
+        @SuppressWarnings("rawtypes")
+		Node[] next;
         IterableQueue<T> cells;
 
         Node(int size, int position)
@@ -59,12 +63,13 @@ public class BoundedCube<T> implements Cube<T> {
             next = new Node[size];
         }
 
-        IterableQueue<T> getCells(int x, int y) {
+        @SuppressWarnings("unchecked")
+		IterableQueue<T> getCells(int x, int y) {
             for (int i = 0; i < usedNode; i++) {
-                Node yNode = next[i];
+                Node<T> yNode = next[i];
                 if (yNode.coordinator == y) {
                     for (int j = 0; j < yNode.usedNode; j++) {
-                        Node xNode = yNode.next[j];
+                        Node<T> xNode = yNode.next[j];
                         if (xNode.coordinator == x) {
                             return (IterableQueue<T>) xNode.cells;
                         }
@@ -74,19 +79,21 @@ public class BoundedCube<T> implements Cube<T> {
             return null;
         }
 
-        void updateNode() {
+        @SuppressWarnings("unchecked")
+		void updateNode() {
             if (usedNode >= nextNodeSize) {
                 nextNodeSize *= 2;
-                Node[] newNext = new Node[nextNodeSize];
+                @SuppressWarnings("rawtypes")
+				Node[] newNext = new Node[nextNodeSize];
 
                 for (int i = 0; i < usedNode; i++) {
                     newNext[i] = next[i];
                 }
                 for (int i = usedNode; i < nextNodeSize; i++) {
-                    newNext[i] = new Node(10, 0);
+                    newNext[i] = new Node<Object>(10, 0);
                     newNext[i].next = new Node[10];
                     for (int j = 0; j < 10; j++) {
-                        newNext[i].next[j] = new Node(0,0);
+                        newNext[i].next[j] = new Node<Object>(0,0);
                     }
                 }
                 next = newNext;
@@ -104,7 +111,8 @@ public class BoundedCube<T> implements Cube<T> {
      * @param z Z Coordinate of the position of the element.
      * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
@@ -113,13 +121,13 @@ public class BoundedCube<T> implements Cube<T> {
             this.cube[z].getCells(x, y).enqueue(element);
             return;
         }
-	    Node zNode = this.cube[z];
+	    Node<T> zNode = this.cube[z];
         zNode.updateNode();
 	    zNode.coordinator = z;
-	    Node yNode = zNode.next[zNode.usedNode];
+	    Node<T> yNode = zNode.next[zNode.usedNode];
 	    yNode.updateNode();
 	    yNode.coordinator = y;
-	    Node xNode = yNode.next[yNode.usedNode];
+	    Node<T> xNode = yNode.next[yNode.usedNode];
         xNode.cells = new TraversableQueue<T>();
 	    xNode.coordinator = x;
 
@@ -137,7 +145,8 @@ public class BoundedCube<T> implements Cube<T> {
      * @return 'Oldest' element at this position or null if no elements at the indicated position.
      * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public T get(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
@@ -157,7 +166,8 @@ public class BoundedCube<T> implements Cube<T> {
      * @return An IterableQueue of all elements at this position or null if no elements at the indicated position.
      * @throws IndexOutOfBoundsException If x, y or z coordinates are out of bounds.
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
@@ -179,7 +189,8 @@ public class BoundedCube<T> implements Cube<T> {
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
         }
-        Iterator<T> itr = (Iterator<T>) this.cube[z].getCells(x, y).iterator();
+        @SuppressWarnings("unchecked")
+		Iterator<T> itr = (Iterator<T>) this.cube[z].getCells(x, y).iterator();
         itr.next();
 	    if (itr.hasNext()) {
 	        return true;
@@ -247,15 +258,16 @@ public class BoundedCube<T> implements Cube<T> {
     /**
      * Removes all elements stored in the cube.
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void clear() {
         for (int i = 0; i < height; i++) {
-            cube[i] = new Node(10, 0);
+            cube[i] = new Node<Object>(10, 0);
             cube[i].coordinator = i;
             for (int j = 0; j < 10; j++) {
-                cube[i].next[j] = new Node(10, 0);
+                cube[i].next[j] = new Node<Object>(10, 0);
                 for (int k = 0; k < 10; k++) {
-                    cube[i].next[j].next[k] = new Node(0, 0);
+                    cube[i].next[j].next[k] = new Node<Object>(0, 0);
                     cube[i].next[j].next[k].cells = new TraversableQueue<T>();
                 }
             }

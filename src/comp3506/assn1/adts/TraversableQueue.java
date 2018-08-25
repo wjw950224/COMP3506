@@ -13,8 +13,10 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> tail;
 	private int size = 0;
 
+	@SuppressWarnings("hiding")
 	private class LinkedNode<T> {
 		LinkedNode<T> next = null;
+		@SuppressWarnings("unused")
 		LinkedNode<T> previous = null;
 		T element = null;
 	}

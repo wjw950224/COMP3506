@@ -44,7 +44,7 @@ public class MyTraversableQueueTest {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
         Object o = new Object();
         testQueue.enqueue(o);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         itr.next();
         assertEquals(null, itr.next());
     }
@@ -58,7 +58,7 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o1);
         testQueue.enqueue(o2);
         testQueue.enqueue(o3);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(o1, itr.next());
         assertEquals(o2, itr.next());
         assertEquals(o3, itr.next());
@@ -71,7 +71,7 @@ public class MyTraversableQueueTest {
         Object o2 = new Object();
         Object o3 = new Object();
         testQueue.enqueue(o1);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(o1, itr.next());
         testQueue.enqueue(o2);
         assertEquals(o2, itr.next());
@@ -85,7 +85,7 @@ public class MyTraversableQueueTest {
         Object o1 = new Object();
         Object o2 = new Object();
         testQueue.enqueue(o1);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(o1, itr.next());
         testQueue.dequeue();
         assertEquals(null, itr.next());
@@ -100,7 +100,7 @@ public class MyTraversableQueueTest {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
         Object o1 = new Object();
         testQueue.enqueue(o1);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(o1, itr.next());
         assertEquals(false, itr.hasNext());
     }
@@ -118,7 +118,7 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o3);
         testQueue.enqueue(o4);
         testQueue.enqueue(o5);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         itr.next();
         assertEquals(true, itr.hasNext());
         testQueue.dequeue();
@@ -141,7 +141,7 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o2);
         testQueue.enqueue(o3);
         testQueue.enqueue(o4);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(true, itr.hasNext());
         testQueue.dequeue();
         testQueue.dequeue();
@@ -163,7 +163,7 @@ public class MyTraversableQueueTest {
         testQueue.enqueue(o2);
         testQueue.enqueue(o3);
         testQueue.enqueue(o4);
-        Iterator itr = testQueue.iterator();
+        Iterator<Object> itr = testQueue.iterator();
         assertEquals(true, itr.hasNext());
         testQueue.dequeue();
         testQueue.dequeue();
