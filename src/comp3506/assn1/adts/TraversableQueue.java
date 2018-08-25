@@ -1,7 +1,13 @@
 package comp3506.assn1.adts;
-
 import java.util.Iterator;
 
+/**
+ * Queue
+ *
+ * @author Jingwei WANG
+ *
+ * @param <T> The type of element held in the data structure.
+ */
 public class TraversableQueue<T> implements IterableQueue<T> {
 	private LinkedNode<T> head;
 	private LinkedNode<T> tail;

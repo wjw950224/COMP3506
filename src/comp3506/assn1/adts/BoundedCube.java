@@ -8,7 +8,7 @@ import java.util.Iterator;
  * A bounded cube has a specified maximum size in each dimension.
  * The root of each dimension is indexed from zero.
  * 
- * @author 
+ * @author Jingwei WANG
  *
  * @param <T> The type of element held in the data structure.
  */
@@ -26,6 +26,9 @@ public class BoundedCube<T> implements Cube<T> {
 	 * @throws IllegalArgumentException If provided dimension sizes are not positive.
 	 */
 	public BoundedCube(int length, int breadth, int height) throws IllegalArgumentException {
+        if (length < 0 || breadth < 0|| height < 0) {
+            throw new IndexOutOfBoundsException();
+        }
 		this.length = length;
 		this.breadth = breadth;
 		this.height = height;
@@ -104,7 +107,6 @@ public class BoundedCube<T> implements Cube<T> {
      */
     @Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
-	    //this.cube[z].updateNode();
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
         }
