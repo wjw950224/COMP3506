@@ -23,25 +23,27 @@ public class MyBoundedCubeTest {
             for (int j = 0; j < 50; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertEquals(element, testCube.get(i, j, k));
+                    
                 }
             }
         }
+        assertEquals(element, testCube.get(39, 49, 9));
     }
 
     @Test//(timeout=500)
     public void testBigInput2() {
         Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
         Object element = new Object();
-        for (int i = 0; i < 1000; i++) {
-            for (int j = 0; j < 25; j++) {
-                for (int k = 0; k < 1; k++) {
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 50; j++) {
+                for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertEquals(element, testCube.get(i, j, k));
+                    //assertEquals(element, testCube.get(i, j, k));
                 }
             }
 
         }
+        assertEquals(element, testCube.get(79, 49, 9));
     }
 
     /**
@@ -73,22 +75,23 @@ public class MyBoundedCubeTest {
     public void testBigInput5() {
         Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
         Object element = new Object();
-        for (int i = 0; i < 250; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 160; i++) {
+            for (int j = 0; j < 50; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
-                    assertEquals(element, testCube.get(i, j, k));
+                    //assertEquals(element, testCube.get(i, j, k));
                 }
             }
         }
+        assertEquals(element, testCube.get(159, 49, 9));
     }
 
     @Test//(timeout=500)
     public void testBigInput6() {
         Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
         Object element = new Object();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 250; j++) {
+        for (int i = 0; i < 320; i++) {
+            for (int j = 0; j < 50; j++) {
                 for (int k = 0; k < 10; k++) {
                     testCube.add(i, j, k, element);
                     assertEquals(element, testCube.get(i, j, k));
@@ -138,6 +141,15 @@ public class MyBoundedCubeTest {
                 }
             }
         }
-
+    }
+    
+    @Test//(timeout=500)
+    public void testMutipleElement() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element = new Object();
+        testCube.add(1, 2, 3, element);
+        assertEquals(false, testCube.isMultipleElementsAt(1, 2, 3));
+        testCube.add(1, 2, 3, element);
+        assertEquals(true, testCube.isMultipleElementsAt(1, 2, 3));
     }
 }

@@ -37,10 +37,14 @@ public class BoundedCube<T> implements Cube<T> {
 		for (int i = 0; i < height; i++) {
 		    cube[i] = new Node<Object>(10, 0);
 		    cube[i].coordinator = i;
-		    for (int j = 0; j < 10; j++) {
+		    for (int j = 0; j < 5; j++) {
 		        cube[i].next[j] = new Node<Object>(10, 0);
-		        for (int k = 0; k < 10; k++) {
+		        cube[i].next2[j] = new Node<Object>(10, 0);
+		        for (int k = 0; k < 5; k++) {
                     cube[i].next[j].next[k] = new Node<Object>(0, 0);
+                    cube[i].next[j].next2[k] = new Node<Object>(0, 0);
+                    cube[i].next2[j].next[k] = new Node<Object>(0, 0);
+                    cube[i].next2[j].next2[k] = new Node<Object>(0, 0);
                 }
             }
         }
@@ -50,32 +54,87 @@ public class BoundedCube<T> implements Cube<T> {
 	private class Node<T> {
         int coordinator;
         int nextNodeSize;
+        int next2NodeSize;
         int usedNode;
+        int usedNode2;
         @SuppressWarnings("rawtypes")
 		Node[] next;
+        @SuppressWarnings("rawtypes")
+		Node[] next2;
         IterableQueue<T> cells;
 
         Node(int size, int position)
         {
             coordinator = position;
-            nextNodeSize = size;
+            nextNodeSize = size/2;
+            if (size%2 != 0) {
+                next2NodeSize = size/2 + 1;
+            } else {
+                next2NodeSize = size/2;
+            }
+
             usedNode = 0;
-            next = new Node[size];
+            usedNode2 = 0;
+            next = new Node[nextNodeSize];
+            next2 = new Node[next2NodeSize];
         }
 
         @SuppressWarnings("unchecked")
 		IterableQueue<T> getCells(int x, int y) {
-            for (int i = 0; i < usedNode; i++) {
-                Node<T> yNode = next[i];
-                if (yNode.coordinator == y) {
-                    for (int j = 0; j < yNode.usedNode; j++) {
-                        Node<T> xNode = yNode.next[j];
-                        if (xNode.coordinator == x) {
-                            return (IterableQueue<T>) xNode.cells;
-                        }
+        	Node<T> yNode;
+        	Node<T> xNode;
+        	if (y > breadth/2) {
+        		for (int i = 0; i < usedNode2; i++) {
+        			yNode = next2[i];
+                    //Node<T> yNode = next[i];
+                    if (yNode.coordinator == y) {
+                    	if (x > length/2) {
+                    		for (int j = 0; j < yNode.usedNode2; j++) {
+                    			xNode = next2[j];
+                                //xNode = yNode.next[j];
+                                if (xNode.coordinator == x) {
+                                    return (IterableQueue<T>) xNode.cells;
+                                }
+                            }
+                    	} else {
+                    		for (int j = 0; j < yNode.usedNode; j++) {
+                    			xNode = yNode.next[j];
+                                //xNode = yNode.next[j];
+                                if (xNode.coordinator == x) {
+                                    return (IterableQueue<T>) xNode.cells;
+                                }
+                            }
+                    	}
+                    	
                     }
                 }
-            }
+        	} else {
+        		for (int i = 0; i < usedNode; i++) {
+        			yNode = next[i];
+                    //Node<T> yNode = next[i];
+                    if (yNode.coordinator == y) {
+                    	if (x > length/2) {
+                    		for (int j = 0; j < yNode.usedNode2; j++) {
+                    			xNode = next2[j];
+                                //xNode = yNode.next[j];
+                                if (xNode.coordinator == x) {
+                                    return (IterableQueue<T>) xNode.cells;
+                                }
+                            }
+                    	} else {
+                    		for (int j = 0; j < yNode.usedNode; j++) {
+                    			xNode = yNode.next[j];
+                                //xNode = yNode.next[j];
+                                if (xNode.coordinator == x) {
+                                    return (IterableQueue<T>) xNode.cells;
+                                }
+                            }
+                    	}
+                    	
+                    }
+                }
+        	}
+            
             return null;
         }
 
@@ -97,13 +156,33 @@ public class BoundedCube<T> implements Cube<T> {
                     }
                 }
                 next = newNext;
+            }
+            
+            if (usedNode2 >= next2NodeSize) {
+                next2NodeSize *= 2;
+                @SuppressWarnings("rawtypes")
+				Node[] newNext2 = new Node[next2NodeSize];
 
+                for (int i = 0; i < usedNode; i++) {
+                    newNext2[i] = next[i];
+                }
+                for (int i = usedNode2; i < next2NodeSize; i++) {
+                    newNext2[i] = new Node<Object>(10, 0);
+                    newNext2[i].next = new Node[10];
+                    for (int j = 0; j < 10; j++) {
+                        newNext2[i].next[j] = new Node<Object>(0,0);
+                    }
+                }
+                next2 = newNext2;
             }
         }
     }
 
     /**
      * Add an element at a fixed position.
+     * 
+     * Run-time: O(n)
+     *
      *
      * @param element The element to be added at the indicated position.
      * @param x X Coordinate of the position of the element.
@@ -114,6 +193,8 @@ public class BoundedCube<T> implements Cube<T> {
     @SuppressWarnings("unchecked")
 	@Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
+    	Node<T> yNode;
+    	Node<T> xNode;
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
         }
@@ -124,20 +205,36 @@ public class BoundedCube<T> implements Cube<T> {
 	    Node<T> zNode = this.cube[z];
         zNode.updateNode();
 	    zNode.coordinator = z;
-	    Node<T> yNode = zNode.next[zNode.usedNode];
+	    if (y > breadth/2) {
+    		yNode = zNode.next2[zNode.usedNode2];
+    		zNode.usedNode2++;
+    	} else {
+    		yNode = zNode.next[zNode.usedNode];
+    		zNode.usedNode++;
+    	}
+	    //yNode = zNode.next[zNode.usedNode];
 	    yNode.updateNode();
 	    yNode.coordinator = y;
-	    Node<T> xNode = yNode.next[yNode.usedNode];
+	    if (x > length/2) {
+    		xNode = yNode.next2[yNode.usedNode2];
+    		yNode.usedNode2++;
+    	} else {
+    		xNode = yNode.next[yNode.usedNode];
+    		yNode.usedNode++;
+    	}
+	    //Node<T> xNode = yNode.next[yNode.usedNode];
         xNode.cells = new TraversableQueue<T>();
 	    xNode.coordinator = x;
-
 	    xNode.cells.enqueue(element);
-	    zNode.usedNode++;
-	    yNode.usedNode++;
+	    
+	    
     }
 
     /**
      * Return the 'oldest' element at the indicated position.
+     * 
+     * Run-time: O(n)
+     *
      *
      * @param x X Coordinate of the position of the element.
      * @param y Y Coordinate of the position of the element.
@@ -159,6 +256,8 @@ public class BoundedCube<T> implements Cube<T> {
 
     /**
      * Return all the elements at the indicated position.
+     * 
+     * Run-time: O(n)
      *
      * @param x X Coordinate of the position of the element(s).
      * @param y Y Coordinate of the position of the element(s).
@@ -177,6 +276,8 @@ public class BoundedCube<T> implements Cube<T> {
 
     /**
      * Indicates whether there are more than one elements at the indicated position.
+     * 
+     * Run-time: O(n)
      *
      * @param x X Coordinate of the position of the element(s).
      * @param y Y Coordinate of the position of the element(s).
@@ -200,6 +301,8 @@ public class BoundedCube<T> implements Cube<T> {
 
     /**
      * Removes the specified element at the indicated position.
+     * 
+     * Run-time: O(n)
      *
      * @param element The element to be removed from the indicated position.
      * @param x X Coordinate of the position.
@@ -238,6 +341,8 @@ public class BoundedCube<T> implements Cube<T> {
 
     /**
      * Removes all elements at the indicated position.
+     * 
+     * Run-time: O(n)
      *
      * @param x X Coordinate of the position.
      * @param y Y Coordinate of the position.
@@ -256,7 +361,10 @@ public class BoundedCube<T> implements Cube<T> {
     }
 
     /**
+     * 
      * Removes all elements stored in the cube.
+     * 
+     * Run-time: O(1)
      */
     @SuppressWarnings("unchecked")
 	@Override
@@ -264,15 +372,24 @@ public class BoundedCube<T> implements Cube<T> {
         for (int i = 0; i < height; i++) {
             cube[i] = new Node<Object>(10, 0);
             cube[i].coordinator = i;
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 5; j++) {
                 cube[i].next[j] = new Node<Object>(10, 0);
-                for (int k = 0; k < 10; k++) {
+                cube[i].next2[j] = new Node<Object>(10, 0);
+                for (int k = 0; k < 5; k++) {
                     cube[i].next[j].next[k] = new Node<Object>(0, 0);
-                    cube[i].next[j].next[k].cells = new TraversableQueue<T>();
+                    cube[i].next[j].next2[k] = new Node<Object>(0, 0);
+                    cube[i].next2[j].next[k] = new Node<Object>(0, 0);
+                    cube[i].next2[j].next2[k] = new Node<Object>(0, 0);
                 }
             }
         }
     }
-
 }
+
+/**
+ * 
+ * 
+ * 
+ * 
+ */
 
