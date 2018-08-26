@@ -72,35 +72,6 @@ public class MyBoundedCubeTest {
     }
 
     @Test//(timeout=500)
-    public void testBigInput5() {
-        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
-        Object element = new Object();
-        for (int i = 0; i < 160; i++) {
-            for (int j = 0; j < 50; j++) {
-                for (int k = 0; k < 10; k++) {
-                    testCube.add(i, j, k, element);
-                    //assertEquals(element, testCube.get(i, j, k));
-                }
-            }
-        }
-        assertEquals(element, testCube.get(159, 49, 9));
-    }
-
-    @Test//(timeout=500)
-    public void testBigInput6() {
-        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
-        Object element = new Object();
-        for (int i = 0; i < 320; i++) {
-            for (int j = 0; j < 50; j++) {
-                for (int k = 0; k < 10; k++) {
-                    testCube.add(i, j, k, element);
-                    assertEquals(element, testCube.get(i, j, k));
-                }
-            }
-        }
-    }
-
-    @Test//(timeout=500)
     public void testRemoveSingleElement() {
         Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
         Object element = new Object();
@@ -151,5 +122,71 @@ public class MyBoundedCubeTest {
         assertEquals(false, testCube.isMultipleElementsAt(1, 2, 3));
         testCube.add(1, 2, 3, element);
         assertEquals(true, testCube.isMultipleElementsAt(1, 2, 3));
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testAddOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        Object element = new Object();
+        testCube.add(6, 6, 6, element);
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testGetOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.get(6, 6, 6);
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testGetAllOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.getAll(6, 6, 6);
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testRemoveOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.remove(6, 6, 6, element);
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testRemoveAllOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.removeAll(6, 6, 6);
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testBoundedCubeOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(-1, 5, 5);
+    }
+    
+    @Test(timeout=500)
+    public void testSeparateStore() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.add(2661, 4, 4, element);
+        testCube.add(4, 1715, 4, element);
+        testCube.add(4, 4, 15, element);
+        testCube.add(2661, 1715, 4, element);
+        testCube.add(2661, 4, 15, element);
+        testCube.add(4, 1715, 15, element);
+        testCube.add(2661, 1715, 15, element);
+        assertEquals(element, testCube.get(4, 4, 4));
+        assertEquals(element, testCube.get(2661, 4, 4));
+        assertEquals(element, testCube.get(4, 1715, 4));
+        assertEquals(element, testCube.get(4, 4, 15));
+        assertEquals(element, testCube.get(2661, 1715, 4));
+        assertEquals(element, testCube.get(2661, 4, 15));
+        assertEquals(element, testCube.get(4, 1715, 15));
+        assertEquals(element, testCube.get(2661, 1715, 15));
     }
 }

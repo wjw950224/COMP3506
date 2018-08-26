@@ -106,7 +106,7 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 	@Override
 	public T dequeue() throws IndexOutOfBoundsException {
 		if (size == 0) {
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
 		T element = this.head.element;
 		if (this.head.next != null) {
