@@ -90,7 +90,7 @@ public class BoundedCube<T> implements Cube<T> {
                     if (yNode.coordinator == y) {
                     	if (x > length/2) {
                     		for (int j = 0; j < yNode.usedNode2; j++) {
-                    			xNode = next2[j];
+                    			xNode = yNode.next2[j];
                                 //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
@@ -115,7 +115,7 @@ public class BoundedCube<T> implements Cube<T> {
                     if (yNode.coordinator == y) {
                     	if (x > length/2) {
                     		for (int j = 0; j < yNode.usedNode2; j++) {
-                    			xNode = next2[j];
+                    			xNode = yNode.next2[j];
                                 //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
@@ -193,8 +193,9 @@ public class BoundedCube<T> implements Cube<T> {
     @SuppressWarnings("unchecked")
 	@Override
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
-    	Node<T> yNode;
+    	Node<T> yNode = null;
     	Node<T> xNode;
+
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
         }
@@ -206,18 +207,35 @@ public class BoundedCube<T> implements Cube<T> {
         zNode.updateNode();
 	    zNode.coordinator = z;
 	    if (y > breadth/2) {
-    		yNode = zNode.next2[zNode.usedNode2];
-    		zNode.usedNode2++;
+	        for (int i = 0; i < zNode.usedNode2; i++) {
+	            if (zNode.next2[i].coordinator == y) {
+                    yNode = zNode.next2[i];
+                    break;
+                }
+            }
+            if (yNode == null) {
+                yNode = zNode.next2[zNode.usedNode2];
+                zNode.usedNode2++;
+            }
+
     	} else {
-    		yNode = zNode.next[zNode.usedNode];
-    		zNode.usedNode++;
+            for (int i = 0; i < zNode.usedNode; i++) {
+                if (zNode.next[i].coordinator == y) {
+                    yNode = zNode.next[i];
+                    break;
+                }
+            }
+            if (yNode == null) {
+                yNode = zNode.next[zNode.usedNode];
+                zNode.usedNode++;
+            }
     	}
 	    //yNode = zNode.next[zNode.usedNode];
 	    yNode.updateNode();
 	    yNode.coordinator = y;
 	    if (x > length/2) {
-    		xNode = yNode.next2[yNode.usedNode2];
-    		yNode.usedNode2++;
+            xNode = yNode.next2[yNode.usedNode2];
+            yNode.usedNode2++;
     	} else {
     		xNode = yNode.next[yNode.usedNode];
     		yNode.usedNode++;
