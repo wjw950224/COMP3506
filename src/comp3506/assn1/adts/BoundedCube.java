@@ -196,7 +196,7 @@ public class BoundedCube<T> implements Cube<T> {
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
     	Node<T> yNode = null;
     	Node<T> xNode;
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
         if (this.cube[z].getCells(x, y) != null) {
@@ -261,7 +261,7 @@ public class BoundedCube<T> implements Cube<T> {
     @SuppressWarnings("unchecked")
 	@Override
     public T get(int x, int y, int z) throws IndexOutOfBoundsException {
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
         if (this.cube[z].getCells(x, y) == null) {
@@ -284,7 +284,7 @@ public class BoundedCube<T> implements Cube<T> {
     @SuppressWarnings("unchecked")
 	@Override
     public IterableQueue<T> getAll(int x, int y, int z) throws IndexOutOfBoundsException {
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
         return this.cube[z].getCells(x, y);
@@ -303,7 +303,7 @@ public class BoundedCube<T> implements Cube<T> {
      */
     @Override
     public boolean isMultipleElementsAt(int x, int y, int z) throws IndexOutOfBoundsException {
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
         @SuppressWarnings("unchecked")
@@ -329,7 +329,7 @@ public class BoundedCube<T> implements Cube<T> {
      */
     @Override
     public boolean remove(int x, int y, int z, T element) throws IndexOutOfBoundsException {
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
 	    boolean result = false;
@@ -367,7 +367,7 @@ public class BoundedCube<T> implements Cube<T> {
      */
     @Override
     public void removeAll(int x, int y, int z) throws IndexOutOfBoundsException {
-        if (x > this.length || y > this.breadth || z > this.height) {
+        if (x >= this.length || y >= this.breadth || z >= this.height) {
             throw new IndexOutOfBoundsException();
         }
 	    int size = this.getAll(x,y,z).size();
