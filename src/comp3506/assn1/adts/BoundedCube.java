@@ -151,8 +151,10 @@ public class BoundedCube<T> implements Cube<T> {
                 for (int i = usedNode; i < nextNodeSize; i++) {
                     newNext[i] = new Node<Object>(10, 0);
                     newNext[i].next = new Node[10];
+                    newNext[i].next2 = new Node[10];
                     for (int j = 0; j < 10; j++) {
                         newNext[i].next[j] = new Node<Object>(0,0);
+                        newNext[i].next2[j] = new Node<Object>(0,0);
                     }
                 }
                 next = newNext;
@@ -163,14 +165,16 @@ public class BoundedCube<T> implements Cube<T> {
                 @SuppressWarnings("rawtypes")
 				Node[] newNext2 = new Node[next2NodeSize];
 
-                for (int i = 0; i < usedNode; i++) {
-                    newNext2[i] = next[i];
+                for (int i = 0; i < usedNode2; i++) {
+                    newNext2[i] = next2[i];
                 }
                 for (int i = usedNode2; i < next2NodeSize; i++) {
                     newNext2[i] = new Node<Object>(10, 0);
                     newNext2[i].next = new Node[10];
+                    newNext2[i].next2 = new Node[10];
                     for (int j = 0; j < 10; j++) {
-                        newNext2[i].next[j] = new Node<Object>(0,0);
+                    	newNext2[i].next[j] = new Node<Object>(0,0);
+                        newNext2[i].next2[j] = new Node<Object>(0,0);
                     }
                 }
                 next2 = newNext2;
@@ -342,7 +346,7 @@ public class BoundedCube<T> implements Cube<T> {
         } else {
 	        cells = this.getAll(x,y,z);
         }
-	    for (int i = 0; i < getAll(x, y, z).size(); i++) {
+	    for (int i = 0; i < cells.size(); i++) {
 	        T object = cells.dequeue();
 	        if (!object.equals(element)) {
 	            tempCells.enqueue(object);

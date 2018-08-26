@@ -19,7 +19,7 @@ public class MyTraversableQueueTest {
         assertEquals(20000, testQueue.size());
     }
 
-    @Test(timeout=500)
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
     public void testDequeueMultiElement() {
         IterableQueue<Object> testQueue = new TraversableQueue<>();
         for (int i = 0; i < 20000; i++) {
@@ -28,7 +28,7 @@ public class MyTraversableQueueTest {
         while(testQueue.size() > 0) {
             testQueue.dequeue();
         }
-        assertEquals(null, testQueue.dequeue());
+        testQueue.dequeue();
     }
 
     @Test(timeout=500)
