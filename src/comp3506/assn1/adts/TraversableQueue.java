@@ -2,7 +2,9 @@ package comp3506.assn1.adts;
 import java.util.Iterator;
 
 /**
- * Queue
+ * TraversableQueue. FIFO
+ *
+ * Memory usage: O(n) where n is the number of input elements.
  *
  * @author Jingwei WANG
  *
@@ -145,3 +147,14 @@ public class TraversableQueue<T> implements IterableQueue<T> {
 		return new Itr();
 	}
 }
+
+/**
+ * 1. The input size is unknown so that array is not suitable.
+ * 
+ * 2. LinkedList does not need to initialize some space to store elements.
+ * 
+ * 3. LinkedList is easier to delete and insert data than array.
+ * 
+ * 4. LinkedList is simpler than other structures and is enough to implement features.
+ * 
+ */

@@ -184,6 +184,13 @@ public class MyBoundedCubeTest {
     @Test(timeout=500, expected = IndexOutOfBoundsException.class)
     public void testBoundedCubeOutOfBounds() {
         Cube<Object> testCube = new BoundedCube<>(-1, 5, 5);
+        testCube.clear();
+    }
+    
+    @Test(timeout=500, expected = IndexOutOfBoundsException.class)
+    public void testIsMultiOutOfBounds() {
+        Cube<Object> testCube = new BoundedCube<>(5, 5, 5);
+        testCube.isMultipleElementsAt(6, 5, 5);
     }
     
     @Test(timeout=500)
@@ -199,6 +206,7 @@ public class MyBoundedCubeTest {
         testCube.add(4, 1715, 15, element);
         testCube.add(2661, 1715, 15, element);
         assertEquals(element, testCube.get(4, 4, 4));
+        assertEquals(null, testCube.get(4, 4, 5));
         assertEquals(element, testCube.get(2661, 4, 4));
         assertEquals(element, testCube.get(4, 1715, 4));
         assertEquals(element, testCube.get(4, 4, 15));
@@ -206,5 +214,27 @@ public class MyBoundedCubeTest {
         assertEquals(element, testCube.get(2661, 4, 15));
         assertEquals(element, testCube.get(4, 1715, 15));
         assertEquals(element, testCube.get(2661, 1715, 15));
+    }
+    
+    @Test(timeout=500)
+    public void testSeparateStore2() {
+        Cube<Object> testCube = new BoundedCube<>(5321, 3428, 35);
+        Object element = new Object();
+        testCube.add(4, 4, 4, element);
+        testCube.add(5320, 4, 4, element);
+        testCube.add(4, 3427, 4, element);
+        testCube.add(4, 4, 34, element);
+        testCube.add(5320, 3427, 4, element);
+        testCube.add(5320, 4, 34, element);
+        testCube.add(4, 3427, 34, element);
+        testCube.add(5320, 3427, 34, element);
+        assertEquals(element, testCube.get(4, 4, 4));
+        assertEquals(element, testCube.get(5320, 4, 4));
+        assertEquals(element, testCube.get(4, 3427, 4));
+        assertEquals(element, testCube.get(4, 4, 34));
+        assertEquals(element, testCube.get(5320, 3427, 4));
+        assertEquals(element, testCube.get(5320, 4, 34));
+        assertEquals(element, testCube.get(4, 3427, 34));
+        assertEquals(element, testCube.get(5320, 3427, 34));
     }
 }

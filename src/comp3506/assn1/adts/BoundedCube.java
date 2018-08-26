@@ -7,6 +7,8 @@ import java.util.Iterator;
  * A bounded cube has a specified maximum size in each dimension.
  * The root of each dimension is indexed from zero.
  * 
+ * Memory usage: O(n) where n is the number of input elements.
+ * 
  * @author Jingwei WANG
  *
  * @param <T> The type of element held in the data structure.
@@ -20,6 +22,8 @@ public class BoundedCube<T> implements Cube<T> {
 
 
 	/**
+	 * Constructor for BoundedCube.
+	 * 
 	 * @param length  Maximum size in the 'x' dimension.
 	 * @param breadth Maximum size in the 'y' dimension.
 	 * @param height  Maximum size in the 'z' dimension.
@@ -68,11 +72,10 @@ public class BoundedCube<T> implements Cube<T> {
             coordinator = position;
             nextNodeSize = size/2;
             if (size%2 != 0) {
-                next2NodeSize = size/2 + 1;
+                next2NodeSize = size/2 + 1; 			//Odd number
             } else {
-                next2NodeSize = size/2;
+                next2NodeSize = size/2; 				//Even number
             }
-
             usedNode = 0;
             usedNode2 = 0;
             next = new Node[nextNodeSize];
@@ -83,23 +86,20 @@ public class BoundedCube<T> implements Cube<T> {
 		IterableQueue<T> getCells(int x, int y) {
         	Node<T> yNode;
         	Node<T> xNode;
-        	if (y > breadth/2) {
+        	if (y > breadth/2) { 				// Y is bigger than or equal to half of breadth.
         		for (int i = 0; i < usedNode2; i++) {
         			yNode = next2[i];
-                    //Node<T> yNode = next[i];
                     if (yNode.coordinator == y) {
-                    	if (x > length/2) {
+                    	if (x > length/2) {				 // X is bigger than or equal to half of length.
                     		for (int j = 0; j < yNode.usedNode2; j++) {
                     			xNode = yNode.next2[j];
-                                //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
                                 }
                             }
-                    	} else {
+                    	} else {						// X is smaller than half of length.
                     		for (int j = 0; j < yNode.usedNode; j++) {
                     			xNode = yNode.next[j];
-                                //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
                                 }
@@ -108,23 +108,20 @@ public class BoundedCube<T> implements Cube<T> {
                     	
                     }
                 }
-        	} else {
+        	} else { 							// Y is smaller than half of breadth.
         		for (int i = 0; i < usedNode; i++) {
         			yNode = next[i];
-                    //Node<T> yNode = next[i];
                     if (yNode.coordinator == y) {
-                    	if (x > length/2) {
+                    	if (x > length/2) {				// X is bigger than or equal to half of length.
                     		for (int j = 0; j < yNode.usedNode2; j++) {
                     			xNode = yNode.next2[j];
-                                //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
                                 }
                             }
-                    	} else {
+                    	} else {						// X is smaller than half of length.
                     		for (int j = 0; j < yNode.usedNode; j++) {
                     			xNode = yNode.next[j];
-                                //xNode = yNode.next[j];
                                 if (xNode.coordinator == x) {
                                     return (IterableQueue<T>) xNode.cells;
                                 }
@@ -199,7 +196,6 @@ public class BoundedCube<T> implements Cube<T> {
     public void add(int x, int y, int z, T element) throws IndexOutOfBoundsException {
     	Node<T> yNode = null;
     	Node<T> xNode;
-
         if (x > this.length || y > this.breadth || z > this.height) {
             throw new IndexOutOfBoundsException();
         }
@@ -234,7 +230,6 @@ public class BoundedCube<T> implements Cube<T> {
                 zNode.usedNode++;
             }
     	}
-	    //yNode = zNode.next[zNode.usedNode];
 	    yNode.updateNode();
 	    yNode.coordinator = y;
 	    if (x > length/2) {
@@ -244,7 +239,6 @@ public class BoundedCube<T> implements Cube<T> {
     		xNode = yNode.next[yNode.usedNode];
     		yNode.usedNode++;
     	}
-	    //Node<T> xNode = yNode.next[yNode.usedNode];
         xNode.cells = new TraversableQueue<T>();
 	    xNode.coordinator = x;
 	    xNode.cells.enqueue(element);
@@ -409,9 +403,73 @@ public class BoundedCube<T> implements Cube<T> {
 }
 
 /**
+ * Design justification:
  * 
+ * 1. 3D Array wastes memory space because it needs to create every cell even if no data is stored.
  * 
+ * 2. My data structure:
  * 
+ *			  										cube[]
+ *			  										  |
+ *			  										  |
+ *			  										zNode
+ *			  										  |
+ *			  										  | 
+ *			  								(store z coordinator)
+ *			  										  |
+ *			  										  |
+ *			  				  -------------------------------------------------
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				yNode 											yNode 
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *				(y smaller than half of breadth)				        	(other y)
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  				  |												  |
+ *			  	 -----------------------------			  	   -------------------------------
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *		   	  xNode							xNode			xNode							xNode
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ * 		(x smaller than					(other x)			  |								  |
+ * 		half of length)					      |				  |								  |
+ *				|							  |				  |								  |
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *			  cells							cells			cells							cells
+ *			    |							  |				  |								  |
+ *			    |							  |				  |								  |
+ *		(Iterable Queue)			   (Iterable Queue)		(Iterable Queue)				(Iterable Queue)
+ *
+ *
+ *
+ * 3. The maximum height is 35 so that it is efficient to save it as an array.
+ * 
+ * 4. The breadth is bigger so that is is more efficient to access x.
+ * 
+ * 5. The length is the biggest so that it will be the last to access.
+ * 
+ * 6. The size of cube only depends on the number of elements has been stored.
+ * 
+ * 7. The initial cube just has fews of node.
+ * 
+ * 8. The number of nodes will be doubled if more space required.
+ *			  
+ * 9. To find an element just needs to access 25% (1/2 * 1/2) of total nodes.
+ * 
+ * 10. It will be more efficient if more ranges of number has been identified.
  * 
  */
 
