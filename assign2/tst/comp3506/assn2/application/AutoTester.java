@@ -1,7 +1,8 @@
 package comp3506.assn2.application;
+import comp3506.assn2.utils.*;
 
-import java.io.FileNotFoundException;
-
+import java.io.*;
+import java.util.List;
 
 /**
  * Hook class used by automated testing tool.
@@ -9,7 +10,7 @@ import java.io.FileNotFoundException;
  * You must implement the constructor stub below and override the methods from the Search interface
  * so that they call the necessary code in your application.
  * 
- * @author 
+ * @author Jingwei WANG
  */
 public class AutoTester implements Search {
 
@@ -28,9 +29,19 @@ public class AutoTester implements Search {
 	 *                               to the FileNotFoundException's constructor.
 	 * @throws IllegalArgumentException if documentFileName is null or an empty string.
 	 */
-	public AutoTester(String documentFileName, String indexFileName, String stopWordsFileName) 
+	public AutoTester(String documentFileName, String indexFileName, String stopWordsFileName)
 			throws FileNotFoundException, IllegalArgumentException {
-		// TODO Implement constructor to load the data from these files and
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("files/" + documentFileName)));
+        String data;
+        try {
+            while((data = br.readLine()) != null) {
+                System.out.println(data);
+            }
+        } catch (FileNotFoundException e) {System.out.println(e);} catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // TODO Implement constructor to load the data from these files and
 		// TODO setup your data structures for the application.
 	}
 
