@@ -24,8 +24,35 @@
       <file leaf-file-name="AutoTester.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="27" column="103" lean-forward="true" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
+            <state relative-caret-position="263">
+              <caret line="34" column="7" lean-forward="true" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestingPair.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingPair.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="32">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Search.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/application/Search.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-515">
+              <caret line="59" column="7" lean-forward="true" selection-start-line="59" selection-start-column="7" selection-end-line="59" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -71,6 +98,11 @@
             <path>
               <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
               <item name="assign2" type="462c0819:PsiDirectoryNode" />
+              <item name="files" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="assign2" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -78,6 +110,13 @@
               <item name="assign2" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="assn2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="assign2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assn2" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
@@ -96,6 +135,20 @@
               <item name="tst" type="462c0819:PsiDirectoryNode" />
               <item name="assn2" type="462c0819:PsiDirectoryNode" />
               <item name="application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="assign2" type="462c0819:PsiDirectoryNode" />
+              <item name="tst" type="462c0819:PsiDirectoryNode" />
+              <item name="assn2" type="462c0819:PsiDirectoryNode" />
+              <item name="testdriver" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="assign2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="assign2" type="462c0819:PsiDirectoryNode" />
+              <item name="tst" type="462c0819:PsiDirectoryNode" />
+              <item name="assn2" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -227,7 +280,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1538210516273</updated>
-      <workItem from="1538210517740" duration="1717000" />
+      <workItem from="1538210517740" duration="4633000" />
     </task>
     <servers />
   </component>
@@ -240,7 +293,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1717000" />
+    <option name="totallyTimeSpent" value="4633000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -252,15 +305,15 @@
       <window_info anchor="right" id="Palette&#9;" />
       <window_info id="Image Layers" />
       <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="bottom" id="Event Log" sideWeight="0.5013889" side_tool="true" visible="true" weight="0.32969698" />
+      <window_info active="true" anchor="bottom" id="Event Log" sideWeight="0.5013889" side_tool="true" visible="true" weight="0.21333334" />
       <window_info anchor="right" id="Maven Projects" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49861112" visible="true" weight="0.32969698" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49861112" visible="true" weight="0.21333334" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info id="Capture Tool" />
       <window_info id="Designer" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="JProfiler" />
       <window_info anchor="right" id="Database" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -294,16 +347,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingPair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="33" lean-forward="true" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingTriple.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -325,10 +368,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingPair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/files/shakespeare.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3185" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/files/stop-words.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="3" lean-forward="true" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/files/shakespeare-index.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="46" lean-forward="true" selection-start-line="9" selection-start-column="46" selection-end-line="9" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/application/Search.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-515">
+          <caret line="59" column="7" lean-forward="true" selection-start-line="59" selection-start-column="7" selection-end-line="59" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="27" column="103" lean-forward="true" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
+        <state relative-caret-position="263">
+          <caret line="34" column="7" lean-forward="true" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
