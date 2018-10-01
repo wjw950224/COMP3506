@@ -8,5 +8,7 @@ public class test {
         AutoTester tester = new AutoTester("files/shakespeare.txt", "files/shakespeare-index.txt",
                 "files/stop-words.txt");
         System.out.println(tester.wordCount("obscure"));
+        String [] searchTerm = {"riper", "decease"};
+        tester.wordsOnLine(searchTerm);
     }
 }
