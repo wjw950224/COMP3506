@@ -1,6 +1,5 @@
 package comp3506.assn2.application;
 import comp3506.assn2.utils.*;
-import javafx.scene.paint.Stop;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -40,6 +39,7 @@ public class AutoTester implements Search {
         String[] words;
         BufferedReader br;
         this.section = null;
+        this.stopWord = null;
         Section currentSection = null;
         Section newSection;
         Line currentLine;
@@ -86,7 +86,6 @@ public class AutoTester implements Search {
             nextStartLineNo = currentSection.getNextSection().getFirstLine().getLineNo();
             while((data = br.readLine()) != null) {
                 lineCount++;
-                currentStopWord = this.stopWord;
                 if (lineCount >= startLineNo && (lineCount < nextStartLineNo || nextStartLineNo == -1)) {
                     columnNo = 1;
                     words = data.toLowerCase().split("\\s");
@@ -95,12 +94,17 @@ public class AutoTester implements Search {
                         currentWord.setIsStop();
                     } else {
                         currentWord = new Word(columnNo, words[0]);
-                        while(currentStopWord != null) {
-                            if (currentStopWord.getStopWord().equals(words[0].toLowerCase())) {
-                                currentWord.setIsStop();
-                                break;
-                            } else {
-                                currentStopWord = currentStopWord.getNextStopWord();
+                        if (words[0].length() == 0) {
+                            currentWord.setIsStop();
+                        } else {
+                            currentStopWord = this.stopWord;
+                            while(currentStopWord != null) {
+                                if (currentStopWord.getStopWord().equals(words[0].toLowerCase())) {
+                                    currentWord.setIsStop();
+                                    break;
+                                } else {
+                                    currentStopWord = currentStopWord.getNextStopWord();
+                                }
                             }
                         }
                     }
@@ -111,15 +115,21 @@ public class AutoTester implements Search {
                     for (int i = 1; i < words.length; i++) {
                         columnNo += (currentWord.getStringSize() + 1);
                         currentWord.setNextWord(columnNo, words[i]);
-                        while(currentStopWord != null) {
-                            if (currentStopWord.getStopWord().equals(words[i].toLowerCase())) {
-                                currentWord.setIsStop();
-                                break;
-                            } else {
-                                currentStopWord = currentStopWord.getNextStopWord();
+
+                        currentWord = currentWord.getNextWord();
+                        if (words[i].length() == 0) {
+                            currentWord.setIsStop();
+                        } else {
+                            currentStopWord = this.stopWord;
+                            while(currentStopWord != null) {
+                                if (currentStopWord.getStopWord().equals(words[i].toLowerCase())) {
+                                    currentWord.setIsStop();
+                                    break;
+                                } else {
+                                    currentStopWord = currentStopWord.getNextStopWord();
+                                }
                             }
                         }
-                        currentWord = currentWord.getNextWord();
                     }
                     currentLine = currentLine.getNextLine();
                     if (lineCount == nextStartLineNo - 1) {
@@ -226,7 +236,7 @@ public class AutoTester implements Search {
 
         Section(int lineNo, String words) {
             firstLine = new Line(lineNo);
-            title = words;
+            title = words.toLowerCase();
             next = null;
             previous = null;
         }
@@ -241,6 +251,10 @@ public class AutoTester implements Search {
 
         Section getPreviousSection() {
             return previous;
+        }
+
+        String getTitle() {
+            return title;
         }
 
         void setNextSection(Section newSection) {
@@ -494,6 +508,40 @@ public class AutoTester implements Search {
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new LinkedList<>();
 
+
+        for (String name : titles) {
+            Section currentSection = this.section;
+            while (currentSection != null) {
+                if (currentSection.getTitle().equals(name.toLowerCase())) {
+                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    int wordCount = 0;
+                    Line currentLine = currentSection.getFirstLine();
+                    while (currentLine != null) {
+                        Word currentWord = currentLine.getFirstWord();
+                        while (currentWord != null) {
+                            if (currentWord.isStop()) {
+                                currentWord = currentWord.getNextWord();
+                                continue;
+                            }
+                            for (String word : words) {
+                                if (currentWord.getString().equals(word.toLowerCase())) {
+                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                            currentWord.getColumnNo(), currentWord.getString());
+                                    sectionResult.add(triple);
+                                    wordCount++;
+                                }
+                            }
+                            currentWord = currentWord.getNextWord();
+                        }
+                        currentLine = currentLine.getNextLine();
+                    }
+                    if (wordCount == words.length) {
+                        result.addAll(sectionResult);
+                    }
+                }
+                currentSection = currentSection.getNextSection();
+            }
+        }
         return result;
     }
 }
