@@ -507,9 +507,8 @@ public class AutoTester implements Search {
     public List<Triple<Integer,Integer,String>> simpleAndSearch(String[] titles, String[] words)
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new LinkedList<>();
-
-
         for (String name : titles) {
+
             Section currentSection = this.section;
             while (currentSection != null) {
                 if (currentSection.getTitle().equals(name.toLowerCase())) {
@@ -517,21 +516,23 @@ public class AutoTester implements Search {
                     int wordCount = 0;
                     Line currentLine = currentSection.getFirstLine();
                     while (currentLine != null) {
-                        Word currentWord = currentLine.getFirstWord();
-                        while (currentWord != null) {
-                            if (currentWord.isStop()) {
-                                currentWord = currentWord.getNextWord();
-                                continue;
-                            }
-                            for (String word : words) {
-                                if (currentWord.getString().equals(word.toLowerCase())) {
+                        for (String word : words) {
+                            Word currentWord = currentLine.getFirstWord();
+                            while (currentWord != null) {
+                                if (currentWord.isStop()) {
+                                    currentWord = currentWord.getNextWord();
+                                    continue;
+                                }
+                                if (currentWord.getString().replaceAll(
+                                        "\\pP", "").equals(word.toLowerCase())) {
                                     Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
-                                            currentWord.getColumnNo(), currentWord.getString());
+                                            currentWord.getColumnNo(), word.toLowerCase());
                                     sectionResult.add(triple);
                                     wordCount++;
+                                    break;
                                 }
+                                currentWord = currentWord.getNextWord();
                             }
-                            currentWord = currentWord.getNextWord();
                         }
                         currentLine = currentLine.getNextLine();
                     }
