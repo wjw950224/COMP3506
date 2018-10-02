@@ -304,7 +304,39 @@ public class AutoTester implements Search {
     public List<Pair<Integer,Integer>> phraseOccurrence(String phrase) throws IllegalArgumentException {
         List<Pair<Integer,Integer>> result = new LinkedList<>();
         String[] words = phrase.split("\\s+");
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                Word currentWord = currentLine.getFirstWord();
+                while (currentWord != null) {
+                    if (currentWord.getString().equals("")) {
+                        currentWord = currentWord.getNextWord();
+                        continue;
+                    }
+                    if (currentWord.getString().equals(words[0])) {
+                        Word nextWord = currentWord.getNextWord();
+                        int i;
+                        for (i = 1; i < words.length; i++) {
+                            if (!nextWord.getString().equals(words[i])) {
+                                break;
+                            } else {
+                                nextWord = nextWord.getNextWord();
+                            }
+                        }
+                        if (i == words.length) {
+                            Pair<Integer,Integer> pair = new Pair<>(currentLine.getLineNo(), currentWord.getColumnNo());
+                            result.add(pair);
+                        }
+                    }
+                    currentWord = currentWord.getNextWord();
+                }
 
+
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
         return result;
     }
 
@@ -454,6 +486,14 @@ public class AutoTester implements Search {
             }
             currentSection = currentSection.getNextSection();
         }
+        return result;
+    }
+
+    @Override
+    public List<Triple<Integer,Integer,String>> simpleAndSearch(String[] titles, String[] words)
+            throws IllegalArgumentException {
+        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+
         return result;
     }
 }
