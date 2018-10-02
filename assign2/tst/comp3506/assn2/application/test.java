@@ -10,5 +10,6 @@ public class test {
         System.out.println(tester.wordCount("obscure"));
         String [] searchTerm = {"riper", "decease"};
         tester.wordsOnLine(searchTerm);
+        tester.someWordsOnLine(searchTerm);
     }
 }

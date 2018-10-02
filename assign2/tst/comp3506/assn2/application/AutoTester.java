@@ -46,7 +46,7 @@ public class AutoTester implements Search {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(indexFileName)));
             while((data = br.readLine()) != null) {
                 newSection = new Section(Integer.parseInt(data.split(",")[1]), data.split(",")[0]);
-                if (section == null) {
+                if (this.section == null) {
                     this.section = newSection;
                     currentSection = this.section;
                 } else if (currentSection != null) {
@@ -63,8 +63,8 @@ public class AutoTester implements Search {
                         currentLine = currentLine.getNextLine();
                     }
                 }
-
             }
+            //currentSection.
             br = new BufferedReader(new InputStreamReader(new FileInputStream(documentFileName)));
             currentSection = this.section;
             currentLine = currentSection.getFirstLine();
@@ -74,19 +74,19 @@ public class AutoTester implements Search {
                 lineCount++;
                 if (lineCount >= startLineNo && (lineCount < nextStartLineNo || nextStartLineNo == -1)) {
                     columnNo = 1;
-                    words = data.toLowerCase().split("\\s+");
+                    words = data.toLowerCase().split("\\s");
                     if (words.length == 0) {
                         currentWord = new Word(columnNo, "");
                     } else {
-                        currentWord = new Word(columnNo, words[0].replaceAll(",", ""));
+                        currentWord = new Word(columnNo, words[0]);
                     }
                     if (nextStartLineNo == -1) {
-                        currentLine.setNextLine(lineCount);
+                        currentLine.setNextLine(currentLine.getLineNo() + 1);
                     }
                     currentLine.setFirstWord(currentWord);
                     for (int i = 1; i < words.length; i++) {
                         columnNo += (currentWord.getStringSize() + 1);
-                        currentWord.setNextWord(columnNo, words[i].replaceAll(",", ""));
+                        currentWord.setNextWord(columnNo, words[i]);
                         currentWord = currentWord.getNextWord();
                     }
                     currentLine = currentLine.getNextLine();
@@ -118,13 +118,15 @@ public class AutoTester implements Search {
 
     private class Word<T> {
         int columnNo;
+        int size;
         String string;
         Word next;
         boolean isStop;
 
         Word(int column, String currentWord) {
             columnNo = column;
-            string = currentWord;
+            string = currentWord.replaceAll(",", "");
+            size = currentWord.length();
             next = null;
             isStop = false;
         }
@@ -134,7 +136,7 @@ public class AutoTester implements Search {
         }
 
         int getStringSize() {
-            return string.length();
+            return size;
         }
 
         Word getNextWord() {
@@ -271,6 +273,108 @@ public class AutoTester implements Search {
                 }
                 if (wordsCount == words.length) {
                     result.add(currentLine.getLineNo());
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Integer> someWordsOnLine(String[] words) throws IllegalArgumentException {
+        List<Integer> result = new LinkedList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                for (String word : words) {
+                    Word currentWord = currentLine.getFirstWord();
+                    while (currentWord != null) {
+                        if (word.toLowerCase().equals(currentWord.getString())) {
+                            if (!result.contains(currentLine.getLineNo())) {
+                                result.add(currentLine.getLineNo());
+                            }
+                            break;
+                        }
+                        currentWord = currentWord.getNextWord();
+                    }
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Integer> wordsNotOnLine(String[] wordsRequired, String[] wordsExcluded)
+            throws IllegalArgumentException {
+        List<Integer> result = new LinkedList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                boolean wordFound = false;
+                boolean wordExcludedFound = false;
+                for (String word : wordsRequired) {
+                    Word currentWord = currentLine.getFirstWord();
+                    while (currentWord != null) {
+                        if (word.toLowerCase().equals(currentWord.getString())) {
+                            wordFound = true;
+                            break;
+                        }
+                        currentWord = currentWord.getNextWord();
+                    }
+                }
+                if (wordFound) {
+                    for (String word : wordsExcluded) {
+                        Word currentWord = currentLine.getFirstWord();
+                        while (currentWord != null) {
+                            if (word.toLowerCase().equals(currentWord.getString())) {
+                                wordExcludedFound = true;
+                                break;
+                            }
+                            currentWord = currentWord.getNextWord();
+                        }
+                    }
+                    if (!result.contains(currentLine.getLineNo()) && !wordExcludedFound) {
+                        result.add(currentLine.getLineNo());
+                    }
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Pair<Integer,Integer>> prefixOccurrence(String prefix) throws IllegalArgumentException {
+        List<Pair<Integer,Integer>> result = new LinkedList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                Word currentWord = currentLine.getFirstWord();
+                while (currentWord != null) {
+                    int counts = 0;
+
+                    if (currentWord.getString().length() < prefix.length()) {
+                        currentWord = currentWord.getNextWord();
+                        continue;
+                    }
+                    String word = currentWord.getString();
+                    for (int i = 0; i < prefix.length(); i++) {
+                        if (prefix.charAt(i) == word.charAt(i)) {
+                            counts++;
+                        }
+                    }
+                    if (counts == prefix.length()) {
+                        Pair<Integer,Integer> pair = new Pair<>(currentLine.getLineNo(), currentWord.getColumnNo());
+                        result.add(pair);
+                    }
+                    currentWord = currentWord.getNextWord();
                 }
                 currentLine = currentLine.getNextLine();
             }
