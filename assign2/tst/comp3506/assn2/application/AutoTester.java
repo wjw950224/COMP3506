@@ -78,7 +78,7 @@ public class AutoTester implements Search {
                     if (words.length == 0) {
                         currentWord = new Word(columnNo, "");
                     } else {
-                        currentWord = new Word(columnNo, words[0]);
+                        currentWord = new Word(columnNo, words[0].replaceAll(",", ""));
                     }
                     if (nextStartLineNo == -1) {
                         currentLine.setNextLine(lineCount);
@@ -86,7 +86,7 @@ public class AutoTester implements Search {
                     currentLine.setFirstWord(currentWord);
                     for (int i = 1; i < words.length; i++) {
                         columnNo += (currentWord.getStringSize() + 1);
-                        currentWord.setNextWord(columnNo, words[i]);
+                        currentWord.setNextWord(columnNo, words[i].replaceAll(",", ""));
                         currentWord = currentWord.getNextWord();
                     }
                     currentLine = currentLine.getNextLine();
@@ -254,9 +254,28 @@ public class AutoTester implements Search {
     @Override
     public List<Integer> wordsOnLine(String[] words) throws IllegalArgumentException {
         List<Integer> result = new LinkedList<>();
-        int count = 0;
-
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                int wordsCount = 0;
+                for (String word : words) {
+                    Word currentWord = currentLine.getFirstWord();
+                    while (currentWord != null) {
+                        if (word.toLowerCase().equals(currentWord.getString())) {
+                            wordsCount++;
+                            break;
+                        }
+                        currentWord = currentWord.getNextWord();
+                    }
+                }
+                if (wordsCount == words.length) {
+                    result.add(currentLine.getLineNo());
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
         return result;
-        //throw new UnsupportedOperationException("Search.wordsOnLine() Not Implemented.");
     }
 }
