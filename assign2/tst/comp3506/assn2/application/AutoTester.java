@@ -1,5 +1,6 @@
 package comp3506.assn2.application;
 import comp3506.assn2.utils.*;
+import javafx.scene.paint.Stop;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class AutoTester implements Search {
     private Section section;
+    private StopWord stopWord;
 	/**
 	 * Create an object that performs search operations on a document.
 	 * If indexFileName or stopWordsFileName are null or an empty string the document should be loaded
@@ -42,6 +44,8 @@ public class AutoTester implements Search {
         Section newSection;
         Line currentLine;
         Word currentWord;
+        StopWord currentStopWord = null;
+        StopWord newStopWord;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(indexFileName)));
             while((data = br.readLine()) != null) {
@@ -64,7 +68,17 @@ public class AutoTester implements Search {
                     }
                 }
             }
-            //currentSection.
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(stopWordsFileName)));
+            while((data = br.readLine()) != null) {
+                newStopWord = new StopWord(data);
+                if (this.stopWord == null) {
+                    this.stopWord = newStopWord;
+                    currentStopWord = this.stopWord;
+                } else if (currentStopWord != null) {
+                    currentStopWord.setNextStopWord(newStopWord);
+                    currentStopWord = currentStopWord.getNextStopWord();
+                }
+            }
             br = new BufferedReader(new InputStreamReader(new FileInputStream(documentFileName)));
             currentSection = this.section;
             currentLine = currentSection.getFirstLine();
@@ -72,13 +86,23 @@ public class AutoTester implements Search {
             nextStartLineNo = currentSection.getNextSection().getFirstLine().getLineNo();
             while((data = br.readLine()) != null) {
                 lineCount++;
+                currentStopWord = this.stopWord;
                 if (lineCount >= startLineNo && (lineCount < nextStartLineNo || nextStartLineNo == -1)) {
                     columnNo = 1;
                     words = data.toLowerCase().split("\\s");
                     if (words.length == 0) {
                         currentWord = new Word(columnNo, "");
+                        currentWord.setIsStop();
                     } else {
                         currentWord = new Word(columnNo, words[0]);
+                        while(currentStopWord != null) {
+                            if (currentStopWord.getStopWord().equals(words[0].toLowerCase())) {
+                                currentWord.setIsStop();
+                                break;
+                            } else {
+                                currentStopWord = currentStopWord.getNextStopWord();
+                            }
+                        }
                     }
                     if (nextStartLineNo == -1) {
                         currentLine.setNextLine(currentLine.getLineNo() + 1);
@@ -87,6 +111,14 @@ public class AutoTester implements Search {
                     for (int i = 1; i < words.length; i++) {
                         columnNo += (currentWord.getStringSize() + 1);
                         currentWord.setNextWord(columnNo, words[i]);
+                        while(currentStopWord != null) {
+                            if (currentStopWord.getStopWord().equals(words[i].toLowerCase())) {
+                                currentWord.setIsStop();
+                                break;
+                            } else {
+                                currentStopWord = currentStopWord.getNextStopWord();
+                            }
+                        }
                         currentWord = currentWord.getNextWord();
                     }
                     currentLine = currentLine.getNextLine();
@@ -102,12 +134,6 @@ public class AutoTester implements Search {
                     }
                 }
             }
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(stopWordsFileName)));
-            //sb = new StringBuilder((int) new File(stopWordsFileName).length());
-            //while((data = br.readLine()) != null) {
-            //    sb.append(data).append(System.getProperty("line.separator"));
-            //}
-            //this.stopWordsLines = sb.toString().split(System.getProperty("line.separator"));
             br.close();
         } catch (IOException e) {
             throw new FileNotFoundException();
@@ -137,6 +163,10 @@ public class AutoTester implements Search {
 
         int getStringSize() {
             return size;
+        }
+
+        boolean isStop() {
+            return isStop;
         }
 
         Word getNextWord() {
@@ -222,6 +252,28 @@ public class AutoTester implements Search {
         }
     }
 
+    private class StopWord<T> {
+	    String word;
+	    StopWord next;
+
+	    StopWord(String stopWord) {
+	        word = stopWord.toLowerCase();
+	        next = null;
+        }
+
+        String getStopWord() {
+	        return word;
+        }
+
+        StopWord getNextStopWord() {
+	        return next;
+        }
+
+        void setNextStopWord(StopWord nextStopWord) {
+	        next = nextStopWord;
+        }
+    }
+
 
     @Override
     public int wordCount(String word) throws IllegalArgumentException {
@@ -232,6 +284,10 @@ public class AutoTester implements Search {
 	        while (currentLine != null) {
 	            Word currentWord = currentLine.getFirstWord();
 	            while (currentWord != null) {
+	                if (currentWord.isStop()) {
+                        currentWord = currentWord.getNextWord();
+	                    continue;
+                    }
                     if (word.toLowerCase().equals(currentWord.getString())) {
                         wordsCount++;
                     }
@@ -250,7 +306,6 @@ public class AutoTester implements Search {
         String[] words = phrase.split("\\s+");
 
         return result;
-        //throw new UnsupportedOperationException("Search.phraseOccurrence() Not Implemented.");
     }
 
     @Override
@@ -264,6 +319,10 @@ public class AutoTester implements Search {
                 for (String word : words) {
                     Word currentWord = currentLine.getFirstWord();
                     while (currentWord != null) {
+                        if (currentWord.isStop()) {
+                            currentWord = currentWord.getNextWord();
+                            continue;
+                        }
                         if (word.toLowerCase().equals(currentWord.getString())) {
                             wordsCount++;
                             break;
@@ -291,6 +350,10 @@ public class AutoTester implements Search {
                 for (String word : words) {
                     Word currentWord = currentLine.getFirstWord();
                     while (currentWord != null) {
+                        if (currentWord.isStop()) {
+                            currentWord = currentWord.getNextWord();
+                            continue;
+                        }
                         if (word.toLowerCase().equals(currentWord.getString())) {
                             if (!result.contains(currentLine.getLineNo())) {
                                 result.add(currentLine.getLineNo());
@@ -320,6 +383,10 @@ public class AutoTester implements Search {
                 for (String word : wordsRequired) {
                     Word currentWord = currentLine.getFirstWord();
                     while (currentWord != null) {
+                        if (currentWord.isStop()) {
+                            currentWord = currentWord.getNextWord();
+                            continue;
+                        }
                         if (word.toLowerCase().equals(currentWord.getString())) {
                             wordFound = true;
                             break;
@@ -331,6 +398,10 @@ public class AutoTester implements Search {
                     for (String word : wordsExcluded) {
                         Word currentWord = currentLine.getFirstWord();
                         while (currentWord != null) {
+                            if (currentWord.isStop()) {
+                                currentWord = currentWord.getNextWord();
+                                continue;
+                            }
                             if (word.toLowerCase().equals(currentWord.getString())) {
                                 wordExcludedFound = true;
                                 break;
@@ -358,8 +429,11 @@ public class AutoTester implements Search {
             while (currentLine != null) {
                 Word currentWord = currentLine.getFirstWord();
                 while (currentWord != null) {
+                    if (currentWord.isStop()) {
+                        currentWord = currentWord.getNextWord();
+                        continue;
+                    }
                     int counts = 0;
-
                     if (currentWord.getString().length() < prefix.length()) {
                         currentWord = currentWord.getNextWord();
                         continue;
