@@ -26,8 +26,8 @@
       <file leaf-file-name="AutoTester.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
-              <caret line="536" column="64" lean-forward="true" selection-start-line="536" selection-start-column="64" selection-end-line="536" selection-end-column="64" />
+            <state relative-caret-position="317">
+              <caret line="688" column="80" lean-forward="true" selection-start-line="688" selection-start-column="80" selection-end-line="688" selection-end-column="80" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -38,29 +38,8 @@
       <file leaf-file-name="ProvidedTests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
+            <state relative-caret-position="-443">
               <caret line="126" column="113" selection-start-line="126" selection-start-column="106" selection-end-line="126" selection-end-column="113" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Pair.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/utils/Pair.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestingPair.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingPair.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -71,8 +50,8 @@
       <file leaf-file-name="Search.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/application/Search.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="7" />
+            <state relative-caret-position="216">
+              <caret line="172" column="7" lean-forward="true" selection-start-line="172" selection-start-column="7" selection-end-line="172" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -115,6 +94,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -188,9 +170,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -352,43 +331,44 @@
       <workItem from="1538486757864" duration="1548000" />
       <workItem from="1538488375762" duration="7199000" />
       <workItem from="1538495687767" duration="2006000" />
+      <workItem from="1538497783094" duration="1055000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 13m 41s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 19m 50s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 21m 56s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 23m 58s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 26m 00s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 26m 19s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 27m 05s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 02h 27m 06s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ProvidedTests - 2018.10.03 at 02h 27m 14s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
     <history-entry file="ProvidedTests - 2018.10.03 at 02h 28m 15s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 31m 27s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 39m 14s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 41m 52s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 44m 44s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 44m 52s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 45m 03s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 46m 18s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.03 at 02h 47m 01s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66144000" />
+    <option name="totallyTimeSpent" value="67199000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -403,7 +383,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5013889" side_tool="true" weight="0.4" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.22666667" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.41454545" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
@@ -433,7 +413,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="80" />
+      <option name="time" value="81" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -808,13 +788,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/utils/Pair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
@@ -829,9 +802,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/utils/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/utils/TestingPair.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
+        <state relative-caret-position="96">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -848,8 +828,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/comp3506/assn2/application/Search.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="7" />
+        <state relative-caret-position="216">
+          <caret line="172" column="7" lean-forward="true" selection-start-line="172" selection-start-column="7" selection-end-line="172" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -858,7 +838,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
+        <state relative-caret-position="-443">
           <caret line="126" column="113" selection-start-line="126" selection-start-column="106" selection-end-line="126" selection-end-column="113" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -868,8 +848,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="536" column="64" lean-forward="true" selection-start-line="536" selection-start-column="64" selection-end-line="536" selection-end-column="64" />
+        <state relative-caret-position="317">
+          <caret line="688" column="80" lean-forward="true" selection-start-line="688" selection-start-column="80" selection-end-line="688" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

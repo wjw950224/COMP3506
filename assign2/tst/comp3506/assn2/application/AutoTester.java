@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class AutoTester implements Search {
     private Section section;
-    private StopWord stopWord;
-	/**
+
+    /**
 	 * Create an object that performs search operations on a document.
 	 * If indexFileName or stopWordsFileName are null or an empty string the document should be loaded
 	 * and all searches will be across the entire document with no stop words.
@@ -39,7 +39,7 @@ public class AutoTester implements Search {
         String[] words;
         BufferedReader br;
         this.section = null;
-        this.stopWord = null;
+        StopWord stopWord = null;
         Section currentSection = null;
         Section newSection;
         Line currentLine;
@@ -71,9 +71,9 @@ public class AutoTester implements Search {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(stopWordsFileName)));
             while((data = br.readLine()) != null) {
                 newStopWord = new StopWord(data);
-                if (this.stopWord == null) {
-                    this.stopWord = newStopWord;
-                    currentStopWord = this.stopWord;
+                if (stopWord == null) {
+                    stopWord = newStopWord;
+                    currentStopWord = stopWord;
                 } else if (currentStopWord != null) {
                     currentStopWord.setNextStopWord(newStopWord);
                     currentStopWord = currentStopWord.getNextStopWord();
@@ -97,7 +97,7 @@ public class AutoTester implements Search {
                         if (words[0].length() == 0) {
                             currentWord.setIsStop();
                         } else {
-                            currentStopWord = this.stopWord;
+                            currentStopWord = stopWord;
                             while(currentStopWord != null) {
                                 if (currentStopWord.getStopWord().equals(words[0].toLowerCase())) {
                                     currentWord.setIsStop();
@@ -120,7 +120,7 @@ public class AutoTester implements Search {
                         if (words[i].length() == 0) {
                             currentWord.setIsStop();
                         } else {
-                            currentStopWord = this.stopWord;
+                            currentStopWord = stopWord;
                             while(currentStopWord != null) {
                                 if (currentStopWord.getStopWord().equals(words[i].toLowerCase())) {
                                     currentWord.setIsStop();
@@ -148,8 +148,6 @@ public class AutoTester implements Search {
         } catch (IOException e) {
             throw new FileNotFoundException();
         }
-        // TODO Implement constructor to load the data from these files and
-		// TODO setup your data structures for the application.
 	}
 
     private class Word<T> {
@@ -508,7 +506,6 @@ public class AutoTester implements Search {
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new LinkedList<>();
         for (String name : titles) {
-
             Section currentSection = this.section;
             while (currentSection != null) {
                 if (currentSection.getTitle().equals(name.toLowerCase())) {
@@ -539,6 +536,177 @@ public class AutoTester implements Search {
                     if (wordCount == words.length) {
                         result.addAll(sectionResult);
                     }
+                }
+                currentSection = currentSection.getNextSection();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Triple<Integer,Integer,String>> simpleOrSearch(String[] titles, String[] words)
+            throws IllegalArgumentException {
+        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        for (String name : titles) {
+            Section currentSection = this.section;
+            while (currentSection != null) {
+                if (currentSection.getTitle().equals(name.toLowerCase())) {
+                    Line currentLine = currentSection.getFirstLine();
+                    while (currentLine != null) {
+                        for (String word : words) {
+                            Word currentWord = currentLine.getFirstWord();
+                            while (currentWord != null) {
+                                if (currentWord.isStop()) {
+                                    currentWord = currentWord.getNextWord();
+                                    continue;
+                                }
+                                if (currentWord.getString().replaceAll(
+                                        "\\pP", "").equals(word.toLowerCase())) {
+                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                            currentWord.getColumnNo(), word.toLowerCase());
+                                    result.add(triple);
+                                    break;
+                                }
+                                currentWord = currentWord.getNextWord();
+                            }
+                        }
+                        currentLine = currentLine.getNextLine();
+                    }
+                }
+                currentSection = currentSection.getNextSection();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Triple<Integer,Integer,String>> simpleNotSearch(String[] titles, String[] wordsRequired,
+                                                                 String[] wordsExcluded)
+            throws IllegalArgumentException {
+        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        for (String name : titles) {
+            Section currentSection = this.section;
+            while (currentSection != null) {
+                boolean excludedFound = false;
+                if (currentSection.getTitle().equals(name.toLowerCase())) {
+                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    int wordCount = 0;
+                    Line currentLine = currentSection.getFirstLine();
+                    while (currentLine != null) {
+                        for (String word : wordsRequired) {
+                            Word currentWord = currentLine.getFirstWord();
+                            while (currentWord != null) {
+                                if (currentWord.isStop()) {
+                                    currentWord = currentWord.getNextWord();
+                                    continue;
+                                }
+                                if (currentWord.getString().replaceAll(
+                                        "\\pP", "").equals(word.toLowerCase())) {
+                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                            currentWord.getColumnNo(), word.toLowerCase());
+                                    sectionResult.add(triple);
+                                    wordCount++;
+                                    break;
+                                }
+                                currentWord = currentWord.getNextWord();
+                            }
+                        }
+                        currentLine = currentLine.getNextLine();
+                    }
+                    if (wordCount == wordsRequired.length) {
+                        currentLine = currentSection.getFirstLine();
+                        while (currentLine != null) {
+                            for (String word : wordsExcluded) {
+                                Word currentWord = currentLine.getFirstWord();
+                                while (currentWord != null) {
+                                    if (currentWord.isStop()) {
+                                        currentWord = currentWord.getNextWord();
+                                        continue;
+                                    }
+                                    if (currentWord.getString().replaceAll(
+                                            "\\pP", "").equals(word.toLowerCase())) {
+                                        excludedFound = true;
+                                        break;
+                                    }
+                                    currentWord = currentWord.getNextWord();
+                                }
+                            }
+                            currentLine = currentLine.getNextLine();
+                        }
+                        if (!excludedFound) {
+                            result.addAll(sectionResult);
+                        }
+                    }
+
+                }
+                currentSection = currentSection.getNextSection();
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Triple<Integer,Integer,String>> compoundAndOrSearch(String[] titles, String[] wordsRequired,
+                                                                    String[] orWords)
+            throws IllegalArgumentException {
+        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        for (String name : titles) {
+            Section currentSection = this.section;
+            while (currentSection != null) {
+                boolean orWordFound = false;
+                if (currentSection.getTitle().equals(name.toLowerCase())) {
+                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    int wordCount = 0;
+                    Line currentLine = currentSection.getFirstLine();
+                    while (currentLine != null) {
+                        for (String word : wordsRequired) {
+                            Word currentWord = currentLine.getFirstWord();
+                            while (currentWord != null) {
+                                if (currentWord.isStop()) {
+                                    currentWord = currentWord.getNextWord();
+                                    continue;
+                                }
+                                if (currentWord.getString().replaceAll(
+                                        "\\pP", "").equals(word.toLowerCase())) {
+                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                            currentWord.getColumnNo(), word.toLowerCase());
+                                    sectionResult.add(triple);
+                                    wordCount++;
+                                    break;
+                                }
+                                currentWord = currentWord.getNextWord();
+                            }
+                        }
+                        currentLine = currentLine.getNextLine();
+                    }
+                    if (wordCount == wordsRequired.length) {
+                        currentLine = currentSection.getFirstLine();
+                        while (currentLine != null) {
+                            for (String word : orWords) {
+                                Word currentWord = currentLine.getFirstWord();
+                                while (currentWord != null) {
+                                    if (currentWord.isStop()) {
+                                        currentWord = currentWord.getNextWord();
+                                        continue;
+                                    }
+                                    if (currentWord.getString().replaceAll(
+                                            "\\pP", "").equals(word.toLowerCase())) {
+                                        orWordFound = true;
+                                        Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                                currentWord.getColumnNo(), word.toLowerCase());
+                                        sectionResult.add(triple);
+                                        break;
+                                    }
+                                    currentWord = currentWord.getNextWord();
+                                }
+                            }
+                            currentLine = currentLine.getNextLine();
+                        }
+                        if (orWordFound) {
+                            result.addAll(sectionResult);
+                        }
+                    }
+
                 }
                 currentSection = currentSection.getNextSection();
             }
