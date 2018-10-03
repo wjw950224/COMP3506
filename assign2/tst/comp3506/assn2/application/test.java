@@ -11,7 +11,24 @@ public class  test {
             System.out.println("Opening files failed!");
             e.printStackTrace();
         }
-        searchApplication.phraseOccurrence("means may fit");
+        searchApplication.phraseOccurrence(" [_Exeunt, bearing off the bodies, after which a peal of ordnance is\n" +
+                " shot off._]\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "THE FIRST PART OF KING HENRY THE FOURTH\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                " Dramatis Personae\n");
     }
 
 
