@@ -2,7 +2,7 @@ package comp3506.assn2.application;
 import comp3506.assn2.utils.*;
 
 import java.io.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,12 +10,13 @@ import java.util.List;
  * The testing tool will instantiate an object of this class to test the functionality of your assignment.
  * You must implement the constructor stub below and override the methods from the Search interface
  * so that they call the necessary code in your application.
- * 
+ *
+ * Memory usage: O(n) where n is the number of words of input files.
+ *
  * @author Jingwei WANG
  */
 public class AutoTester implements Search {
     private Section section;
-
     /**
 	 * Create an object that performs search operations on a document.
 	 * If indexFileName or stopWordsFileName are null or an empty string the document should be loaded
@@ -47,43 +48,53 @@ public class AutoTester implements Search {
         StopWord currentStopWord = null;
         StopWord newStopWord;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(indexFileName)));
-            while((data = br.readLine()) != null) {
-                newSection = new Section(Integer.parseInt(data.split(",")[1]), data.split(",")[0]);
-                if (this.section == null) {
-                    this.section = newSection;
-                    currentSection = this.section;
-                } else if (currentSection != null) {
-                    Section lastSection = currentSection;
-                    currentSection.setNextSection(newSection);
-                    currentSection = currentSection.getNextSection();
-                    currentSection.setPreviousSection(lastSection);
-                    Section previousSection = currentSection.getPreviousSection();
-                    firstLineNo = previousSection.getFirstLine().getLineNo();
-                    lastLineNo = currentSection.getFirstLine().getLineNo();
-                    currentLine = previousSection.getFirstLine();
-                    for (int i = firstLineNo + 1; i < lastLineNo; i++) {
-                        currentLine.setNextLine(i);
-                        currentLine = currentLine.getNextLine();
+            if (!(indexFileName == null || indexFileName.equals(""))) {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(indexFileName)));
+                while((data = br.readLine()) != null) {
+                    newSection = new Section(Integer.parseInt(data.split(",")[1]), data.split(",")[0]);
+                    if (this.section == null) {
+                        this.section = newSection;
+                        currentSection = this.section;
+                    } else if (currentSection != null) {
+                        Section lastSection = currentSection;
+                        currentSection.setNextSection(newSection);
+                        currentSection = currentSection.getNextSection();
+                        currentSection.setPreviousSection(lastSection);
+                        Section previousSection = currentSection.getPreviousSection();
+                        firstLineNo = previousSection.getFirstLine().getLineNo();
+                        lastLineNo = currentSection.getFirstLine().getLineNo();
+                        currentLine = previousSection.getFirstLine();
+                        for (int i = firstLineNo + 1; i < lastLineNo; i++) {
+                            currentLine.setNextLine(i);
+                            currentLine = currentLine.getNextLine();
+                        }
                     }
                 }
             }
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(stopWordsFileName)));
-            while((data = br.readLine()) != null) {
-                newStopWord = new StopWord(data);
-                if (stopWord == null) {
-                    stopWord = newStopWord;
-                    currentStopWord = stopWord;
-                } else if (currentStopWord != null) {
-                    currentStopWord.setNextStopWord(newStopWord);
-                    currentStopWord = currentStopWord.getNextStopWord();
+            if (!(stopWordsFileName == null || stopWordsFileName.equals(""))) {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(stopWordsFileName)));
+                while((data = br.readLine()) != null) {
+                    newStopWord = new StopWord(data);
+                    if (stopWord == null) {
+                        stopWord = newStopWord;
+                        currentStopWord = stopWord;
+                    } else if (currentStopWord != null) {
+                        currentStopWord.setNextStopWord(newStopWord);
+                        currentStopWord = currentStopWord.getNextStopWord();
+                    }
                 }
             }
             br = new BufferedReader(new InputStreamReader(new FileInputStream(documentFileName)));
-            currentSection = this.section;
+            if (this.section != null) {
+                currentSection = this.section;
+                nextStartLineNo = currentSection.getNextSection().getFirstLine().getLineNo();
+            } else {
+                this.section = new Section(1, "");
+                currentSection = this.section;
+                nextStartLineNo = -1;
+            }
             currentLine = currentSection.getFirstLine();
             startLineNo = currentSection.getFirstLine().getLineNo();
-            nextStartLineNo = currentSection.getNextSection().getFirstLine().getLineNo();
             while((data = br.readLine()) != null) {
                 lineCount++;
                 if (lineCount >= startLineNo && (lineCount < nextStartLineNo || nextStartLineNo == -1)) {
@@ -115,7 +126,6 @@ public class AutoTester implements Search {
                     for (int i = 1; i < words.length; i++) {
                         columnNo += (currentWord.getStringSize() + 1);
                         currentWord.setNextWord(columnNo, words[i]);
-
                         currentWord = currentWord.getNextWord();
                         if (words[i].length() == 0) {
                             currentWord.setIsStop();
@@ -150,7 +160,7 @@ public class AutoTester implements Search {
         }
 	}
 
-    private class Word<T> {
+    private class Word {
         int columnNo;
         int size;
         String string;
@@ -194,7 +204,7 @@ public class AutoTester implements Search {
         }
     }
 
-    private class Line<T> {
+    private class Line {
         int lineNo;
         Word firstWord;
         Line next;
@@ -226,7 +236,7 @@ public class AutoTester implements Search {
         }
     }
 
-    private class Section<T> {
+    private class Section {
         Line firstLine;
         String title;
         Section next;
@@ -264,7 +274,7 @@ public class AutoTester implements Search {
         }
     }
 
-    private class StopWord<T> {
+    private class StopWord {
 	    String word;
 	    StopWord next;
 
@@ -286,7 +296,102 @@ public class AutoTester implements Search {
         }
     }
 
+    private boolean isWordFound(String[] wordsRequired, Line currentLine) {
+        for (String word : wordsRequired) {
+            Word currentWord = currentLine.getFirstWord();
+            while (currentWord != null) {
+                if (currentWord.isStop()) {
+                    currentWord = currentWord.getNextWord();
+                    continue;
+                }
+                if (word.toLowerCase().equals(currentWord.getString())) {
+                    return true;
+                }
+                currentWord = currentWord.getNextWord();
+            }
+        }
+        return false;
+    }
 
+    private int getWordCount(String[] words, List<Triple<Integer, Integer, String>> sectionResult,
+                             int wordCount, Line currentLine) {
+        while (currentLine != null) {
+            for (String word : words) {
+                Word currentWord = currentLine.getFirstWord();
+                while (currentWord != null) {
+                    if (currentWord.isStop()) {
+                        currentWord = currentWord.getNextWord();
+                        continue;
+                    }
+                    if (currentWord.getString().replaceAll(
+                            "\\pP", "").equals(word.toLowerCase())) {
+                        Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
+                                currentWord.getColumnNo(), word.toLowerCase());
+                        sectionResult.add(triple);
+                        wordCount++;
+                        break;
+                    }
+                    currentWord = currentWord.getNextWord();
+                }
+            }
+            currentLine = currentLine.getNextLine();
+        }
+        return wordCount;
+    }
+
+    private void getResult(Word currentWord, Line currentLine, Section currentSection, String[] words,
+                                            List<Pair<Integer,Integer>> result) {
+        Word nextWord = null;
+        int wordsMatch = 1;
+        int lineNo = currentLine.getLineNo();
+        int columnNo = currentWord.getColumnNo();
+        Pair<Integer,Integer> pairResult = new Pair<>(lineNo, columnNo);
+        if (words.length == 1) {
+            result.add(pairResult);
+        } else {
+            if (lineNo == 28267) {
+                System.out.println("28267");
+            }
+            if (currentWord.getNextWord() != null) {
+                nextWord = currentWord.getNextWord();
+            } else if (currentLine.getNextLine() != null) {
+                currentLine = currentLine.getNextLine();
+                nextWord = currentLine.getFirstWord();
+            } else if (currentSection.getNextSection() != null) {
+                currentSection = currentSection.getNextSection();
+                currentLine = currentSection.getFirstLine();
+                nextWord = currentLine.getFirstWord();
+            }
+            while (nextWord != null) {
+                if (wordsMatch == words.length){
+                    break;
+                }
+                if (currentWord.isStop()) {
+                    currentWord = currentWord.getNextWord();
+                    continue;
+                }
+                if (words[wordsMatch].toLowerCase().equals(nextWord.getString())) {
+                    wordsMatch++;
+                } else {
+                    break;
+                }
+                nextWord = nextWord.getNextWord();
+            }
+            if (wordsMatch == words.length) {
+                result.add(pairResult);
+            }
+        }
+	}
+
+    /**
+     * Determines the number of times the word appears in the document.
+     *
+     * Run-time: O(n)
+     *
+     * @param word The word to be counted in the document.
+     * @return The number of occurrences of the word in the document.
+     * @throws IllegalArgumentException if word is null or an empty String.
+     */
     @Override
     public int wordCount(String word) throws IllegalArgumentException {
 	    int wordsCount = 0;
@@ -312,10 +417,21 @@ public class AutoTester implements Search {
         return wordsCount;
     }
 
+    /**
+     * Finds all occurrences of the phrase in the document.
+     * A phrase may be a single word or a sequence of words.
+     *
+     * Run-time: O(n)
+     *
+     * @param phrase The phrase to be found in the document.
+     * @return List of pairs, where each pair indicates the line and column number of each occurrence of the phrase.
+     *         Returns an empty list if the phrase is not found in the document.
+     * @throws IllegalArgumentException if phrase is null or an empty String.
+     */
     @Override
     public List<Pair<Integer,Integer>> phraseOccurrence(String phrase) throws IllegalArgumentException {
-        List<Pair<Integer,Integer>> result = new LinkedList<>();
-        String[] words = phrase.split("\\s+");
+        List<Pair<Integer,Integer>> result = new ArrayList<>();
+        String[] words = phrase.split("\\s");
         Section currentSection = this.section;
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
@@ -327,146 +443,33 @@ public class AutoTester implements Search {
                         continue;
                     }
                     if (currentWord.getString().equals(words[0])) {
-                        Word nextWord = currentWord.getNextWord();
-                        int i;
-                        for (i = 1; i < words.length; i++) {
-                            if (!nextWord.getString().equals(words[i])) {
-                                break;
-                            } else {
-                                nextWord = nextWord.getNextWord();
-                            }
-                        }
-                        if (i == words.length) {
-                            Pair<Integer,Integer> pair = new Pair<>(currentLine.getLineNo(), currentWord.getColumnNo());
-                            result.add(pair);
-                        }
+                        getResult(currentWord, currentLine, currentSection, words, result);
                     }
                     currentWord = currentWord.getNextWord();
                 }
-
-
                 currentLine = currentLine.getNextLine();
             }
             currentSection = currentSection.getNextSection();
         }
+
         return result;
     }
 
-    @Override
-    public List<Integer> wordsOnLine(String[] words) throws IllegalArgumentException {
-        List<Integer> result = new LinkedList<>();
-        Section currentSection = this.section;
-        while (currentSection != null) {
-            Line currentLine = currentSection.getFirstLine();
-            while (currentLine != null) {
-                int wordsCount = 0;
-                for (String word : words) {
-                    Word currentWord = currentLine.getFirstWord();
-                    while (currentWord != null) {
-                        if (currentWord.isStop()) {
-                            currentWord = currentWord.getNextWord();
-                            continue;
-                        }
-                        if (word.toLowerCase().equals(currentWord.getString())) {
-                            wordsCount++;
-                            break;
-                        }
-                        currentWord = currentWord.getNextWord();
-                    }
-                }
-                if (wordsCount == words.length) {
-                    result.add(currentLine.getLineNo());
-                }
-                currentLine = currentLine.getNextLine();
-            }
-            currentSection = currentSection.getNextSection();
-        }
-        return result;
-    }
-
-    @Override
-    public List<Integer> someWordsOnLine(String[] words) throws IllegalArgumentException {
-        List<Integer> result = new LinkedList<>();
-        Section currentSection = this.section;
-        while (currentSection != null) {
-            Line currentLine = currentSection.getFirstLine();
-            while (currentLine != null) {
-                for (String word : words) {
-                    Word currentWord = currentLine.getFirstWord();
-                    while (currentWord != null) {
-                        if (currentWord.isStop()) {
-                            currentWord = currentWord.getNextWord();
-                            continue;
-                        }
-                        if (word.toLowerCase().equals(currentWord.getString())) {
-                            if (!result.contains(currentLine.getLineNo())) {
-                                result.add(currentLine.getLineNo());
-                            }
-                            break;
-                        }
-                        currentWord = currentWord.getNextWord();
-                    }
-                }
-                currentLine = currentLine.getNextLine();
-            }
-            currentSection = currentSection.getNextSection();
-        }
-        return result;
-    }
-
-    @Override
-    public List<Integer> wordsNotOnLine(String[] wordsRequired, String[] wordsExcluded)
-            throws IllegalArgumentException {
-        List<Integer> result = new LinkedList<>();
-        Section currentSection = this.section;
-        while (currentSection != null) {
-            Line currentLine = currentSection.getFirstLine();
-            while (currentLine != null) {
-                boolean wordFound = false;
-                boolean wordExcludedFound = false;
-                for (String word : wordsRequired) {
-                    Word currentWord = currentLine.getFirstWord();
-                    while (currentWord != null) {
-                        if (currentWord.isStop()) {
-                            currentWord = currentWord.getNextWord();
-                            continue;
-                        }
-                        if (word.toLowerCase().equals(currentWord.getString())) {
-                            wordFound = true;
-                            break;
-                        }
-                        currentWord = currentWord.getNextWord();
-                    }
-                }
-                if (wordFound) {
-                    for (String word : wordsExcluded) {
-                        Word currentWord = currentLine.getFirstWord();
-                        while (currentWord != null) {
-                            if (currentWord.isStop()) {
-                                currentWord = currentWord.getNextWord();
-                                continue;
-                            }
-                            if (word.toLowerCase().equals(currentWord.getString())) {
-                                wordExcludedFound = true;
-                                break;
-                            }
-                            currentWord = currentWord.getNextWord();
-                        }
-                    }
-                    if (!result.contains(currentLine.getLineNo()) && !wordExcludedFound) {
-                        result.add(currentLine.getLineNo());
-                    }
-                }
-                currentLine = currentLine.getNextLine();
-            }
-            currentSection = currentSection.getNextSection();
-        }
-        return result;
-    }
-
+    /**
+     * Finds all occurrences of the prefix in the document.
+     * A prefix is the start of a word. It can also be the complete word.
+     * For example, "obscure" would be a prefix for "obscure", "obscured", "obscures" and "obscurely".
+     *
+     * Run-time: O(n)
+     *
+     * @param prefix The prefix of a word that is to be found in the document.
+     * @return List of pairs, where each pair indicates the line and column number of each occurrence of the prefix.
+     *         Returns an empty list if the prefix is not found in the document.
+     * @throws IllegalArgumentException if prefix is null or an empty String.
+     */
     @Override
     public List<Pair<Integer,Integer>> prefixOccurrence(String prefix) throws IllegalArgumentException {
-        List<Pair<Integer,Integer>> result = new LinkedList<>();
+        List<Pair<Integer,Integer>> result = new ArrayList<>();
         Section currentSection = this.section;
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
@@ -501,38 +504,163 @@ public class AutoTester implements Search {
         return result;
     }
 
+    /**
+     * Searches the document for lines that contain all the words in the 'words' parameter.
+     * Implements simple "and" logic when searching for the words.
+     * The words do not need to be contiguous on the line.
+     *
+     * Run-time: O(n)
+     *
+     * @param words Array of words to find on a single line in the document.
+     * @return List of line numbers on which all the words appear in the document.
+     *         Returns an empty list if the words do not appear in any line in the document.
+     * @throws IllegalArgumentException if words is null or an empty array
+     *                                  or any of the Strings in the array are null or empty.
+     */
+    @Override
+    public List<Integer> wordsOnLine(String[] words) throws IllegalArgumentException {
+        List<Integer> result = new ArrayList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                int wordsCount = 0;
+                for (String word : words) {
+                    Word currentWord = currentLine.getFirstWord();
+                    while (currentWord != null) {
+                        if (currentWord.isStop()) {
+                            currentWord = currentWord.getNextWord();
+                            continue;
+                        }
+                        if (word.toLowerCase().equals(currentWord.getString())) {
+                            wordsCount++;
+                            break;
+                        }
+                        currentWord = currentWord.getNextWord();
+                    }
+                }
+                if (wordsCount == words.length) {
+                    result.add(currentLine.getLineNo());
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    /**
+     * Searches the document for lines that contain any of the words in the 'words' parameter.
+     * Implements simple "or" logic when searching for the words.
+     * The words do not need to be contiguous on the line.
+     *
+     * Run-time: O(n)
+     *
+     * @param words Array of words to find on a single line in the document.
+     * @return List of line numbers on which any of the words appear in the document.
+     *         Returns an empty list if none of the words appear in any line in the document.
+     * @throws IllegalArgumentException if words is null or an empty array
+     *                                  or any of the Strings in the array are null or empty.
+     */
+    @Override
+    public List<Integer> someWordsOnLine(String[] words) throws IllegalArgumentException {
+        List<Integer> result = new ArrayList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                for (String word : words) {
+                    Word currentWord = currentLine.getFirstWord();
+                    while (currentWord != null) {
+                        if (currentWord.isStop()) {
+                            currentWord = currentWord.getNextWord();
+                            continue;
+                        }
+                        if (word.toLowerCase().equals(currentWord.getString())) {
+                            if (!result.contains(currentLine.getLineNo())) {
+                                result.add(currentLine.getLineNo());
+                            }
+                            break;
+                        }
+                        currentWord = currentWord.getNextWord();
+                    }
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    /**
+     * Searches the document for lines that contain all the words in the 'wordsRequired' parameter
+     * and none of the words in the 'wordsExcluded' parameter.
+     * Implements simple "not" logic when searching for the words.
+     * The words do not need to be contiguous on the line.
+     *
+     * Run-time: O(n)
+     *
+     * @param wordsRequired Array of words to find on a single line in the document.
+     * @param wordsExcluded Array of words that must not be on the same line as 'wordsRequired'.
+     * @return List of line numbers on which all the wordsRequired appear
+     *         and none of the wordsExcluded appear in the document.
+     *         Returns an empty list if no lines meet the search criteria.
+     * @throws IllegalArgumentException if either of wordsRequired or wordsExcluded are null or an empty array
+     *                                  or any of the Strings in either of the arrays are null or empty.
+     */
+    @Override
+    public List<Integer> wordsNotOnLine(String[] wordsRequired, String[] wordsExcluded)
+            throws IllegalArgumentException {
+        List<Integer> result = new ArrayList<>();
+        Section currentSection = this.section;
+        while (currentSection != null) {
+            Line currentLine = currentSection.getFirstLine();
+            while (currentLine != null) {
+                boolean wordFound;
+                boolean wordExcludedFound;
+                wordFound = isWordFound(wordsRequired, currentLine);
+                if (wordFound) {
+                    wordExcludedFound = isWordFound(wordsExcluded, currentLine);
+                    if (!result.contains(currentLine.getLineNo()) && !wordExcludedFound) {
+                        result.add(currentLine.getLineNo());
+                    }
+                }
+                currentLine = currentLine.getNextLine();
+            }
+            currentSection = currentSection.getNextSection();
+        }
+        return result;
+    }
+
+    /**
+     * Searches the document for sections that contain all the words in the 'words' parameter.
+     * Implements simple "and" logic when searching for the words.
+     * The words do not need to be on the same lines.
+     *
+     * Run-time: O(n)
+     *
+     * @param titles Array of titles of the sections to search within,
+     *               the entire document is searched if titles is null or an empty array.
+     * @param words Array of words to find within a defined section in the document.
+     * @return List of triples, where each triple indicates the line and column number and word found,
+     *         for each occurrence of one of the words.
+     *         Returns an empty list if the words are not found in the indicated sections of the document,
+     *         or all the indicated sections are not part of the document.
+     * @throws IllegalArgumentException if words is null or an empty array
+     *                                  or any of the Strings in either of the arrays are null or empty.
+     */
     @Override
     public List<Triple<Integer,Integer,String>> simpleAndSearch(String[] titles, String[] words)
             throws IllegalArgumentException {
-        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        List<Triple<Integer,Integer,String>> result = new ArrayList<>();
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
                 if (currentSection.getTitle().equals(name.toLowerCase())) {
-                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    List<Triple<Integer,Integer,String>> sectionResult = new ArrayList<>();
                     int wordCount = 0;
                     Line currentLine = currentSection.getFirstLine();
-                    while (currentLine != null) {
-                        for (String word : words) {
-                            Word currentWord = currentLine.getFirstWord();
-                            while (currentWord != null) {
-                                if (currentWord.isStop()) {
-                                    currentWord = currentWord.getNextWord();
-                                    continue;
-                                }
-                                if (currentWord.getString().replaceAll(
-                                        "\\pP", "").equals(word.toLowerCase())) {
-                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
-                                            currentWord.getColumnNo(), word.toLowerCase());
-                                    sectionResult.add(triple);
-                                    wordCount++;
-                                    break;
-                                }
-                                currentWord = currentWord.getNextWord();
-                            }
-                        }
-                        currentLine = currentLine.getNextLine();
-                    }
+                    wordCount = getWordCount(words, sectionResult, wordCount, currentLine);
                     if (wordCount == words.length) {
                         result.addAll(sectionResult);
                     }
@@ -543,10 +671,27 @@ public class AutoTester implements Search {
         return result;
     }
 
+    /**
+     * Searches the document for sections that contain any of the words in the 'words' parameter.
+     * Implements simple "or" logic when searching for the words.
+     * The words do not need to be on the same lines.
+     *
+     * Run-time: O(n)
+     *
+     * @param titles Array of titles of the sections to search within,
+     *               the entire document is searched if titles is null or an empty array.
+     * @param words Array of words to find within a defined section in the document.
+     * @return List of triples, where each triple indicates the line and column number and word found,
+     *         for each occurrence of one of the words.
+     *         Returns an empty list if the words are not found in the indicated sections of the document,
+     *         or all the indicated sections are not part of the document.
+     * @throws IllegalArgumentException if words is null or an empty array
+     *                                  or any of the Strings in either of the arrays are null or empty.
+     */
     @Override
     public List<Triple<Integer,Integer,String>> simpleOrSearch(String[] titles, String[] words)
             throws IllegalArgumentException {
-        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        List<Triple<Integer,Integer,String>> result = new ArrayList<>();
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
@@ -579,40 +724,39 @@ public class AutoTester implements Search {
         return result;
     }
 
+    /**
+     * Searches the document for sections that contain all the words in the 'wordsRequired' parameter
+     * and none of the words in the 'wordsExcluded' parameter.
+     * Implements simple "not" logic when searching for the words.
+     * The words do not need to be on the same lines.
+     *
+     * Run-time: O(n)
+     *
+     * @param titles Array of titles of the sections to search within,
+     *               the entire document is searched if titles is null or an empty array.
+     * @param wordsRequired Array of words to find within a defined section in the document.
+     * @param wordsExcluded Array of words that must not be in the same section as 'wordsRequired'.
+     * @return List of triples, where each triple indicates the line and column number and word found,
+     *         for each occurrence of one of the required words.
+     *         Returns an empty list if the words are not found in the indicated sections of the document,
+     *         or all the indicated sections are not part of the document.
+     * @throws IllegalArgumentException if wordsRequired is null or an empty array
+     *                                  or any of the Strings in any of the arrays are null or empty.
+     */
     @Override
     public List<Triple<Integer,Integer,String>> simpleNotSearch(String[] titles, String[] wordsRequired,
                                                                  String[] wordsExcluded)
             throws IllegalArgumentException {
-        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        List<Triple<Integer,Integer,String>> result = new ArrayList<>();
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
                 boolean excludedFound = false;
                 if (currentSection.getTitle().equals(name.toLowerCase())) {
-                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    List<Triple<Integer,Integer,String>> sectionResult = new ArrayList<>();
                     int wordCount = 0;
                     Line currentLine = currentSection.getFirstLine();
-                    while (currentLine != null) {
-                        for (String word : wordsRequired) {
-                            Word currentWord = currentLine.getFirstWord();
-                            while (currentWord != null) {
-                                if (currentWord.isStop()) {
-                                    currentWord = currentWord.getNextWord();
-                                    continue;
-                                }
-                                if (currentWord.getString().replaceAll(
-                                        "\\pP", "").equals(word.toLowerCase())) {
-                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
-                                            currentWord.getColumnNo(), word.toLowerCase());
-                                    sectionResult.add(triple);
-                                    wordCount++;
-                                    break;
-                                }
-                                currentWord = currentWord.getNextWord();
-                            }
-                        }
-                        currentLine = currentLine.getNextLine();
-                    }
+                    wordCount = getWordCount(wordsRequired, sectionResult, wordCount, currentLine);
                     if (wordCount == wordsRequired.length) {
                         currentLine = currentSection.getFirstLine();
                         while (currentLine != null) {
@@ -645,40 +789,39 @@ public class AutoTester implements Search {
         return result;
     }
 
+    /**
+     * Searches the document for sections that contain all the words in the 'wordsRequired' parameter
+     * and at least one of the words in the 'orWords' parameter.
+     * Implements simple compound "and/or" logic when searching for the words.
+     * The words do not need to be on the same lines.
+     *
+     * Run-time: O(n)
+     *
+     * @param titles Array of titles of the sections to search within,
+     *               the entire document is searched if titles is null or an empty array.
+     * @param wordsRequired Array of words to find within a defined section in the document.
+     * @param orWords Array of words, of which at least one, must be in the same section as 'wordsRequired'.
+     * @return List of triples, where each triple indicates the line and column number and word found,
+     *         for each occurrence of one of the words.
+     *         Returns an empty list if the words are not found in the indicated sections of the document,
+     *         or all the indicated sections are not part of the document.
+     * @throws IllegalArgumentException if wordsRequired is null or an empty array
+     *                                  or any of the Strings in any of the arrays are null or empty.
+     */
     @Override
     public List<Triple<Integer,Integer,String>> compoundAndOrSearch(String[] titles, String[] wordsRequired,
                                                                     String[] orWords)
             throws IllegalArgumentException {
-        List<Triple<Integer,Integer,String>> result = new LinkedList<>();
+        List<Triple<Integer,Integer,String>> result = new ArrayList<>();
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
                 boolean orWordFound = false;
                 if (currentSection.getTitle().equals(name.toLowerCase())) {
-                    List<Triple<Integer,Integer,String>> sectionResult = new LinkedList<>();
+                    List<Triple<Integer,Integer,String>> sectionResult = new ArrayList<>();
                     int wordCount = 0;
                     Line currentLine = currentSection.getFirstLine();
-                    while (currentLine != null) {
-                        for (String word : wordsRequired) {
-                            Word currentWord = currentLine.getFirstWord();
-                            while (currentWord != null) {
-                                if (currentWord.isStop()) {
-                                    currentWord = currentWord.getNextWord();
-                                    continue;
-                                }
-                                if (currentWord.getString().replaceAll(
-                                        "\\pP", "").equals(word.toLowerCase())) {
-                                    Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
-                                            currentWord.getColumnNo(), word.toLowerCase());
-                                    sectionResult.add(triple);
-                                    wordCount++;
-                                    break;
-                                }
-                                currentWord = currentWord.getNextWord();
-                            }
-                        }
-                        currentLine = currentLine.getNextLine();
-                    }
+                    wordCount = getWordCount(wordsRequired, sectionResult, wordCount, currentLine);
                     if (wordCount == wordsRequired.length) {
                         currentLine = currentSection.getFirstLine();
                         while (currentLine != null) {
@@ -706,7 +849,6 @@ public class AutoTester implements Search {
                             result.addAll(sectionResult);
                         }
                     }
-
                 }
                 currentSection = currentSection.getNextSection();
             }

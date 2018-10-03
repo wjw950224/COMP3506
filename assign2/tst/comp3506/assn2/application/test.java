@@ -2,14 +2,17 @@ package comp3506.assn2.application;
 
 import java.io.FileNotFoundException;
 
-public class test {
-    public static void main(String[] argv) throws FileNotFoundException {
-        //System.out.println(System.getProperty("user.dir"));
-        AutoTester tester = new AutoTester("files/shakespeare.txt", "files/shakespeare-index.txt",
-                "files/stop-words.txt");
-        System.out.println(tester.wordCount("obscure"));
-        String [] searchTerm = {"riper", "decease"};
-        tester.wordsOnLine(searchTerm);
-        tester.someWordsOnLine(searchTerm);
+public class  test {
+    private static Search searchApplication;
+    public static void main(String[] argv) {
+        try {
+            searchApplication = new AutoTester("files/shakespeare.txt", "", "");
+        } catch (FileNotFoundException | IllegalArgumentException e) {
+            System.out.println("Opening files failed!");
+            e.printStackTrace();
+        }
+        searchApplication.phraseOccurrence("means may fit");
     }
+
+
 }
