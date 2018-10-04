@@ -169,7 +169,7 @@ public class AutoTester implements Search {
 
         Word(int column, String currentWord) {
             columnNo = column;
-            string = currentWord.replaceAll(",", "");
+            string = currentWord.replaceAll("[,.?!@#$%^&*:]", "");
             size = currentWord.length();
             next = null;
             isStop = false;
@@ -324,7 +324,7 @@ public class AutoTester implements Search {
                         continue;
                     }
                     if (currentWord.getString().replaceAll(
-                            "\\pP", "").equals(word.toLowerCase())) {
+                            "[,.?!@#$%^&*:]", "").equals(word.toLowerCase())) {
                         Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
                                 currentWord.getColumnNo(), word.toLowerCase());
                         sectionResult.add(triple);
@@ -436,7 +436,7 @@ public class AutoTester implements Search {
     @Override
     public List<Pair<Integer,Integer>> phraseOccurrence(String phrase) throws IllegalArgumentException {
         List<Pair<Integer,Integer>> result = new ArrayList<>();
-        String[] words = phrase.toLowerCase().trim().replaceAll(",", "").split("\\s");
+        String[] words = phrase.toLowerCase().trim().replaceAll("[,.?!@#$%^&*:]", "").split("\\s");
         Section currentSection = this.section;
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
@@ -709,8 +709,7 @@ public class AutoTester implements Search {
                                     currentWord = currentWord.getNextWord();
                                     continue;
                                 }
-                                if (currentWord.getString().replaceAll(
-                                        "\\pP", "").equals(word.toLowerCase())) {
+                                if (currentWord.getString().equals(word.toLowerCase())) {
                                     Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
                                             currentWord.getColumnNo(), word.toLowerCase());
                                     result.add(triple);
@@ -771,8 +770,7 @@ public class AutoTester implements Search {
                                         currentWord = currentWord.getNextWord();
                                         continue;
                                     }
-                                    if (currentWord.getString().replaceAll(
-                                            "\\pP", "").equals(word.toLowerCase())) {
+                                    if (currentWord.getString().equals(word.toLowerCase())) {
                                         excludedFound = true;
                                         break;
                                     }
@@ -836,8 +834,7 @@ public class AutoTester implements Search {
                                         currentWord = currentWord.getNextWord();
                                         continue;
                                     }
-                                    if (currentWord.getString().replaceAll(
-                                            "\\pP", "").equals(word.toLowerCase())) {
+                                    if (currentWord.getString().equals(word.toLowerCase())) {
                                         orWordFound = true;
                                         Triple<Integer, Integer, String> triple = new Triple<>(currentLine.getLineNo(),
                                                 currentWord.getColumnNo(), word.toLowerCase());

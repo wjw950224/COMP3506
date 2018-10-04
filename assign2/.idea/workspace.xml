@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4615b6ca-d8cc-4508-9f50-45dec871487c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/assign2/comp3506/assn2/application/AutoTester.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/assign2/comp3506/assn2/application/AutoTester.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tst/comp3506/assn2/application/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/tst/comp3506/assn2/application/test.java" afterDir="false" />
     </list>
@@ -20,8 +18,8 @@
       <file leaf-file-name="AutoTester.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="671" column="65" lean-forward="true" selection-start-line="671" selection-start-column="65" selection-end-line="671" selection-end-column="65" />
+            <state relative-caret-position="310">
+              <caret line="443" column="62" lean-forward="true" selection-start-line="443" selection-start-column="62" selection-end-line="443" selection-end-column="62" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -32,8 +30,8 @@
       <file leaf-file-name="test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="300">
+              <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -41,8 +39,8 @@
       <file leaf-file-name="ProvidedTests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="51" column="9" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+            <state relative-caret-position="101">
+              <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -94,7 +92,6 @@
     <panes>
       <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -168,12 +165,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
+    <property name="last.edited.regexp" value="" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/tst" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -194,7 +193,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.test">
+  <component name="RunManager" selected="JUnit.ProvidedTests">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -301,8 +300,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.test" />
         <item itemvalue="JUnit.ProvidedTests" />
+        <item itemvalue="Application.test" />
         <item itemvalue="JUnit.ProvidedTests.testWordCount" />
       </list>
     </recent_temporary>
@@ -335,43 +334,44 @@
       <workItem from="1538550993792" duration="1957000" />
       <workItem from="1538627486044" duration="460000" />
       <workItem from="1538635282585" duration="1054000" />
+      <workItem from="1538681821733" duration="2931000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ProvidedTests - 2018.10.03 at 16h 40m 18s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 09m 48s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 16h 46m 47s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 09m 54s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 16h 51m 49s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 14m 12s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 17h 00m 24s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 17m 20s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 17h 44m 25s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 18m 52s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 17h 46m 18s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 19m 09s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 17h 48m 36s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 22m 56s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.03 at 17h 48m 42s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 24m 29s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.04 at 14h 37m 12s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 25m 32s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ProvidedTests - 2018.10.04 at 14h 38m 55s.xml">
+    <history-entry file="ProvidedTests - 2018.10.05 at 06h 26m 52s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83811000" />
+    <option name="totallyTimeSpent" value="86742000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -386,7 +386,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5013889" side_tool="true" weight="0.4" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.20969696" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.19151515" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
@@ -398,7 +398,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49861112" weight="0.23151515" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49861112" weight="0.18909091" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -416,7 +416,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="106" />
+      <option name="time" value="112" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -832,27 +832,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="51" column="9" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+        <state relative-caret-position="101">
+          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="671" column="65" lean-forward="true" selection-start-line="671" selection-start-column="65" selection-end-line="671" selection-end-column="65" />
+        <state relative-caret-position="310">
+          <caret line="443" column="62" lean-forward="true" selection-start-line="443" selection-start-column="62" selection-end-line="443" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
