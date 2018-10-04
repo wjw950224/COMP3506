@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4615b6ca-d8cc-4508-9f50-45dec871487c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tst/comp3506/assn2/application/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/tst/comp3506/assn2/application/test.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +17,8 @@
       <file leaf-file-name="AutoTester.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="443" column="62" lean-forward="true" selection-start-line="443" selection-start-column="62" selection-end-line="443" selection-end-column="62" />
+            <state relative-caret-position="13605">
+              <caret line="949" column="33" lean-forward="true" selection-start-line="949" selection-start-column="33" selection-end-line="949" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -31,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/test.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="300">
-              <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+              <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -39,8 +38,8 @@
       <file leaf-file-name="ProvidedTests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+            <state relative-caret-position="1710">
+              <caret line="134" selection-start-line="134" selection-end-line="134" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,8 +89,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -165,7 +164,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -335,13 +334,11 @@
       <workItem from="1538627486044" duration="460000" />
       <workItem from="1538635282585" duration="1054000" />
       <workItem from="1538681821733" duration="2931000" />
+      <workItem from="1538690967490" duration="850000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ProvidedTests - 2018.10.05 at 06h 09m 48s.xml">
-      <configuration name="ProvidedTests" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ProvidedTests - 2018.10.05 at 06h 09m 54s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
@@ -369,9 +366,12 @@
     <history-entry file="ProvidedTests - 2018.10.05 at 06h 26m 52s.xml">
       <configuration name="ProvidedTests" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="ProvidedTests - 2018.10.05 at 08h 23m 26s.xml">
+      <configuration name="ProvidedTests" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86742000" />
+    <option name="totallyTimeSpent" value="87592000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -386,7 +386,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5013889" side_tool="true" weight="0.4" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.19151515" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49375" weight="0.35151514" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
@@ -835,14 +835,14 @@
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
-          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/testdriver/ProvidedTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+        <state relative-caret-position="1710">
+          <caret line="134" selection-start-line="134" selection-end-line="134" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -851,8 +851,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tst/comp3506/assn2/application/AutoTester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="443" column="62" lean-forward="true" selection-start-line="443" selection-start-column="62" selection-end-line="443" selection-end-column="62" />
+        <state relative-caret-position="13605">
+          <caret line="949" column="33" lean-forward="true" selection-start-line="949" selection-start-column="33" selection-end-line="949" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

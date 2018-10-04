@@ -48,6 +48,9 @@ public class AutoTester implements Search {
         StopWord currentStopWord = null;
         StopWord newStopWord;
         try {
+            if (documentFileName == null) {
+                throw new IllegalArgumentException();
+            }
             if (!(indexFileName == null || indexFileName.equals(""))) {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(indexFileName)));
                 while((data = br.readLine()) != null) {
@@ -401,6 +404,9 @@ public class AutoTester implements Search {
     public int wordCount(String word) throws IllegalArgumentException {
 	    int wordsCount = 0;
 	    Section currentSection = this.section;
+	    if (word == null || word.equals("")) {
+	        throw new IllegalArgumentException();
+        }
 	    while (currentSection != null) {
 	        Line currentLine = currentSection.getFirstLine();
 	        while (currentLine != null) {
@@ -436,6 +442,9 @@ public class AutoTester implements Search {
     @Override
     public List<Pair<Integer,Integer>> phraseOccurrence(String phrase) throws IllegalArgumentException {
         List<Pair<Integer,Integer>> result = new ArrayList<>();
+        if (phrase == null || phrase.equals("")) {
+            throw new IllegalArgumentException();
+        }
         String[] words = phrase.toLowerCase().trim().replaceAll("[,.?!@#$%^&*:]", "").split("\\s");
         Section currentSection = this.section;
         while (currentSection != null) {
@@ -475,6 +484,9 @@ public class AutoTester implements Search {
     public List<Pair<Integer,Integer>> prefixOccurrence(String prefix) throws IllegalArgumentException {
         List<Pair<Integer,Integer>> result = new ArrayList<>();
         Section currentSection = this.section;
+        if (prefix == null || prefix.equals("")) {
+            throw new IllegalArgumentException();
+        }
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
             while (currentLine != null) {
@@ -524,6 +536,14 @@ public class AutoTester implements Search {
     @Override
     public List<Integer> wordsOnLine(String[] words) throws IllegalArgumentException {
         List<Integer> result = new ArrayList<>();
+        if (words == null || words.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : words) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         Section currentSection = this.section;
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
@@ -570,6 +590,14 @@ public class AutoTester implements Search {
     public List<Integer> someWordsOnLine(String[] words) throws IllegalArgumentException {
         List<Integer> result = new ArrayList<>();
         Section currentSection = this.section;
+        if (words == null || words.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : words) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
             while (currentLine != null) {
@@ -617,6 +645,19 @@ public class AutoTester implements Search {
             throws IllegalArgumentException {
         List<Integer> result = new ArrayList<>();
         Section currentSection = this.section;
+        if (wordsRequired == null || wordsRequired.length == 0 || wordsExcluded == null || wordsExcluded.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : wordsRequired) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : wordsExcluded) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
             while (currentLine != null) {
@@ -657,6 +698,19 @@ public class AutoTester implements Search {
     public List<Triple<Integer,Integer,String>> simpleAndSearch(String[] titles, String[] words)
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new ArrayList<>();
+        if (titles == null || titles.length == 0 || words == null || words.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : titles) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : words) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
@@ -696,6 +750,19 @@ public class AutoTester implements Search {
     public List<Triple<Integer,Integer,String>> simpleOrSearch(String[] titles, String[] words)
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new ArrayList<>();
+        if (titles == null || titles.length == 0 || words == null || words.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : titles) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : words) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
@@ -751,6 +818,25 @@ public class AutoTester implements Search {
                                                                  String[] wordsExcluded)
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new ArrayList<>();
+        if (wordsRequired == null || wordsRequired.length == 0 || wordsExcluded == null || wordsExcluded.length == 0 ||
+                titles == null || titles.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : wordsRequired) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : wordsExcluded) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : titles) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
@@ -815,6 +901,25 @@ public class AutoTester implements Search {
                                                                     String[] orWords)
             throws IllegalArgumentException {
         List<Triple<Integer,Integer,String>> result = new ArrayList<>();
+        if (wordsRequired == null || wordsRequired.length == 0 || orWords == null || orWords.length == 0 ||
+                titles == null || titles.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String string : wordsRequired) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : orWords) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
+        for (String string : titles) {
+            if (string == null || string.equals("")) {
+                throw new IllegalArgumentException();
+            }
+        }
         for (String name : titles) {
             Section currentSection = this.section;
             while (currentSection != null) {
