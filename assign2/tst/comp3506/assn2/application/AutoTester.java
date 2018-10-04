@@ -364,20 +364,6 @@ public class AutoTester implements Search {
                 if (wordsMatch == words.length){
                     break;
                 }
-                if (nextWord.isStop()) {
-                    if (nextWord.getNextWord() != null) {
-                        nextWord = nextWord.getNextWord();
-                    } else if (currentLine.getNextLine() != null) {
-                        currentLine = currentLine.getNextLine();
-                        nextWord = currentLine.getFirstWord();
-                    } else if (currentSection.getNextSection() != null) {
-                        currentSection = currentSection.getNextSection();
-                        currentLine = currentSection.getFirstLine();
-                        nextWord = currentLine.getFirstWord();
-                    }
-                    //nextWord = nextWord.getNextWord();
-                    continue;
-                }
                 if (words[wordsMatch].toLowerCase().equals(nextWord.getString())) {
                     wordsMatch++;
                 } else {
@@ -395,7 +381,6 @@ public class AutoTester implements Search {
                 } else {
                     break;
                 }
-
             }
             if (wordsMatch == words.length) {
                 result.add(pairResult);
@@ -451,7 +436,7 @@ public class AutoTester implements Search {
     @Override
     public List<Pair<Integer,Integer>> phraseOccurrence(String phrase) throws IllegalArgumentException {
         List<Pair<Integer,Integer>> result = new ArrayList<>();
-        String[] words = phrase.toLowerCase().trim().replaceAll(",", "").split("\\s+");
+        String[] words = phrase.toLowerCase().trim().replaceAll(",", "").split("\\s");
         Section currentSection = this.section;
         while (currentSection != null) {
             Line currentLine = currentSection.getFirstLine();
@@ -471,7 +456,6 @@ public class AutoTester implements Search {
             }
             currentSection = currentSection.getNextSection();
         }
-
         return result;
     }
 
