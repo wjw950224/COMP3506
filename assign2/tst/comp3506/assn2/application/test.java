@@ -17,7 +17,7 @@ public class  test {
                 "Or to take arms against");
         System.out.println(searchApplication.wordCount("fortune"));
         String[] words = new String[3];
-        words[0] = "Devoutly";
+        words[0] = "";
         words[1] = "wish'd";
         words[2] = "sleep";
         searchApplication.wordsOnLine(words);
